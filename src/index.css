@@ -1,0 +1,463 @@
+@import "tailwindcss";
+
+/* Global styles for mobile responsiveness */
+
+/* Responsive navbar padding */
+/* 
+@media (min-width: 640px) {
+  body {
+    padding-top: 72px; 
+  }
+} */
+
+/* Mobile-first responsive utilities */
+/* @media (max-width: 640px) {
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+} */
+
+/* Smooth scrolling for mobile */
+/* html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+} */
+
+/* Dark mode utilities */
+/* .dark {
+  color-scheme: dark;
+} */
+
+/* .light {
+  color-scheme: light;
+} */
+
+/* .dark body {
+  @apply text-white bg-black;
+} */
+/* 
+.light body {
+  @apply text-black bg-white;
+} */
+
+/* Custom scrollbar for dark mode */
+
+
+/* pointer animation  */
+
+/* Base cursor dot */
+
+/* .cursor-dot {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background-color: yellow;
+  background: linear-gradient(to right, #FF6EC7, #FFD700);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: background 0.2s ease;
+} */
+
+/* .cursor-idle-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid yellow;
+  background: rgba(0, 0, 0, 0.6);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9998;
+  animation: idlePulse 1s ease-out forwards;
+  opacity: 1;
+} */
+
+/* @keyframes idlePulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0;
+  }
+} */
+
+
+
+
+
+/* Custom animations */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 0.6s ease-out forwards;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+/* Video background optimizations */
+video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #10b981);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #059669);
+}
+
+
+/* FinancialEcosystem.css */
+.financial-ecosystem {
+  min-height: 100vh;
+  /* background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); */
+  color: white;
+  font-family: 'Arial', sans-serif;
+  overflow-x: hidden;
+}
+
+.content-container {
+  max-width: 1200px;
+  text-align: center;
+  margin: 100px auto auto auto;
+  padding: 2rem;
+}
+
+/* Header Styles */
+/* header {
+  text-align: center;
+  padding: 3rem 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+} */
+
+header.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+header h1 {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, #00b4db, #0083b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.underline {
+  height: 4px;
+  width: 80px;
+  background: linear-gradient(to right, #00b4db, #0083b0);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+/* Vision Section */
+.vision-section {
+  padding: 4rem 0;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+}
+
+.vision-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.vision-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.vision-item {
+  flex: 1;
+  min-width: 300px;
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vision-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.icon-container {
+  margin-bottom: 1.5rem;
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  position: relative;
+}
+
+.icon.globe {
+  background: conic-gradient(from 0deg, #00b4db, #0083b0, #00b4db);
+}
+
+.icon.empowerment {
+  background: conic-gradient(from 90deg, #00b4db, #0083b0, #00b4db);
+}
+
+.icon.bridge {
+  background: conic-gradient(from 180deg, #00b4db, #0083b0, #00b4db);
+}
+
+.icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: #0f2027;
+  border-radius: 50%;
+}
+
+.vision-item h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #00b4db;
+}
+
+.vision-item p {
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Mission Section */
+.mission-section {
+  padding: 4rem 0;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+}
+
+.mission-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mission-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.mission-card {
+  flex: 1;
+  min-width: 300px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.mission-card:hover {
+  transform: translateY(-5px);
+}
+
+.mission-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #00b4db;
+}
+
+.mission-card p {
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.animation-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(to right, #00b4db, #0083b0);
+  border-radius: 2px;
+  animation: progressAnimation 2s ease-in-out infinite alternate;
+}
+
+@keyframes progressAnimation {
+  0% {
+    width: 30%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+/* CTA Section */
+.cta-section {
+  text-align: center;
+  padding: 4rem 0;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.6s;
+}
+
+.cta-section.visible {
+  opacity: 1;
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.cta-section p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+.cta-button {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, #00b4db, #0083b0);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content-container {
+    padding: 1rem;
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+  }
+
+  .vision-content,
+  .mission-content {
+    flex-direction: column;
+  }
+
+  .vision-item,
+  .mission-card {
+    min-width: 100%;
+  }
+}
