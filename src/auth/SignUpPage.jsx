@@ -7,7 +7,7 @@ import { SignupApi } from "../api/SignUp";
 import useAxios from "../utils/useAxios";
 import SingupSaveModel from "./SingupSaveModel";
 import { toast } from "react-toastify";
-import { Eye, EyeOff, User, Mail, Phone, Lock, Key, ArrowLeft, Shield } from "lucide-react";
+import { Eye, EyeOff, User, Mail, Phone, Lock, Key, GitBranch } from "lucide-react";
 import AuthWrapper from "../component/wrapper/AuthWrapper";
 import { colors } from "../variables/colors";
 import Button from "../component/wrapper/Button";
@@ -38,6 +38,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [referralCode, setReferralCode] = useState("");
+  const [side, setSide] = useState("left");
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -73,6 +74,7 @@ const SignUpPage = () => {
       phone: `${selectedCountry.code}${phone}`,
       email,
       password,
+      side,
     };
 
     try {
@@ -145,6 +147,33 @@ const SignUpPage = () => {
               {fieldErrors.referralCode}
             </p>
           )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Placement Side <span className="text-red-500">*</span>
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { value: "left", label: "Left" },
+              { value: "right", label: "Right" },
+            ].map((item) => (
+              <button
+                key={item.value}
+                type="button"
+                onClick={() => setSide(item.value)}
+                className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
+                  side === item.value
+                    ? "border-transparent text-white shadow-md"
+                    : "border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300"
+                }`}
+                style={side === item.value ? { background: `linear-gradient(to right, ${colors.theme1}, ${colors.theme2})` } : {}}
+              >
+                <GitBranch size={16} />
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Username Input */}

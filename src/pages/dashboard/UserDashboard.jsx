@@ -1,22 +1,7 @@
-import React from 'react'
-import '../../App.css'
-import { Outlet } from 'react-router-dom'
-import Usernav from './users/Usernav'
-import Dashboard from './users/Dashboard'
-import RoyaltyIncomeranked from '../../RoyaltyIncomeranked'
-
+import { Outlet } from "react-router-dom";
 
 function UserDashboard() {
-  return (
-    <>
-      <div className='bg-color-1'>
-        <Usernav />
-        <Dashboard />
-   
-        <Outlet />
-      </div>
-    </>
-  )
+  return <Outlet />;
 }
 
-export default UserDashboard
+export default UserDashboard;

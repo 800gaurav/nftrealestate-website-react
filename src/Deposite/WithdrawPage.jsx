@@ -1,112 +1,188 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import useAxios from '../utils/useAxios';
-import Usernav from '../pages/dashboard/users/Usernav';
 import { useAuth } from '../context/AuthContext';
-import WithdrawNav from './WithdrawNav';
+import { Wallet, AlertCircle, Info, CheckCircle } from 'lucide-react';
 
 function WithdrawPage() {
-  
-  const [buyotp, setBuyOtp] = useState('');
   const [Data, setData] = useState({});
-const [withdrawMethod, setWithdrawMethod] = useState('');
-  const [amount, setAmount] = useState('')
- const { setloading} = useAuth();
+  const [withdrawMethod, setWithdrawMethod] = useState('');
+  const [amount, setAmount] = useState('');
+  const [hasPending, setHasPending] = useState(false);
+  const { setloading } = useAuth();
   const { fetchData } = useAxios();
 
   const user = Cookies.get('USER') ? JSON.parse(Cookies.get('USER')) : null;
   const userId = user?.userId;
-const [loadingNftId, setLoadingNftId] = useState(null);
-  const fetchbalancData = async () => {
+
+  const adminCharge = amount ? (Number(amount) * 0.10).toFixed(2) : '0.00';
+  const payableAmount = amount ? (Number(amount) - Number(adminCharge)).toFixed(2) : '0.00';
+
+  const fetchDashboard = async () => {
     try {
-      setloading(true)
-      const res = await fetchData({
-        url: `/api/v1/user/profile/user-dashboard/${userId}`,
-      });
+      setloading(true);
+      const res = await fetchData({ url: `/api/v1/user/profile/user-dashboard/${userId}` });
       setData(res.data || {});
-      setloading(false)
+      setloading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      setloading(false)
+      console.error(error);
+      setloading(false);
     }
   };
-  useEffect(()=>{
-    fetchbalancData()
-  },[])
-  const confirmBuyNft = async (e) => {
-    e.preventDefault();
+
+  const fetchPendingStatus = async () => {
     try {
-   setloading(true)
+      const res = await fetchData({ url: `/api/v1/user/payment/withdraw-history?type=pending&userId=${userId}` });
+      const records = res.data?.records || res.data || [];
+      setHasPending(Array.isArray(records) && records.length > 0);
+    } catch (_) {}
+  };
+
+  useEffect(() => {
+    fetchDashboard();
+    fetchPendingStatus();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!withdrawMethod) return toast.error('Please select withdrawal method');
+    if (!amount || Number(amount) < 5) return toast.error('Minimum withdrawal amount is $5');
+    if (hasPending) return toast.error('You already have a pending withdrawal request. Wait for it to be processed.');
+
+    try {
+      setloading(true);
       const res = await fetchData({
         url: `/api/v1/user/payment/withdraw-request`,
         method: 'POST',
-        data: {userId: userId, coin:withdrawMethod, amount:amount },
+        data: { userId, coin: withdrawMethod, amount: Number(amount) },
       });
-      toast.success('Created withdraw request');
-      setloading(false)
-    if(res.success){
-        setAmount('')
-      setWithdrawMethod('')
-      setloading(false)
-    }
-     
+      if (res.success) {
+        toast.success('Withdrawal request created successfully!');
+        setAmount('');
+        setWithdrawMethod('');
+        setHasPending(true);
+        fetchDashboard();
+      } else {
+        toast.error(res.message || 'Something went wrong');
+      }
+      setloading(false);
     } catch (error) {
-      console.error(error);
-      toast.error(error.message)
-       setloading(false)
+      toast.error(error.message || 'Failed to submit withdrawal');
+      setloading(false);
     }
   };
+
   return (
-        <div className='mt-[80px] min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
-<WithdrawNav/>
-  <div className=" mt-15 flex items-center justify-center z-50 px-2">
-    <div className="bg-gray-900 text-white w-full max-w-2xl p-8 shadow-lg border border-gray-800 rounded-lg relative">
+    <div className="min-h-screen bg-slate-950 px-4 py-8">
+      <div className="flex items-center justify-center">
+        <div className="w-full max-w-xl space-y-6">
 
-    
+          {/* Balance Cards */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-slate-900 border border-slate-700 rounded-xl p-4 text-center">
+              <p className="text-slate-400 text-xs mb-1">Wallet Balance</p>
+              <p className="text-2xl font-bold text-emerald-400">${Number(Data?.walletBalance || 0).toFixed(2)}</p>
+            </div>
+            <div className="bg-slate-900 border border-slate-700 rounded-xl p-4 text-center">
+              <p className="text-slate-400 text-xs mb-1">Fund Balance</p>
+              <p className="text-2xl font-bold text-blue-400">${Number(Data?.fundBalance || 0).toFixed(2)}</p>
+            </div>
+          </div>
 
-      <h2 className="text-center text-[#d7fc36] font-semibold text-lg">Withdraw Balance</h2>
-      <p className="text-center text-sm mt-1">
-        <span className="text-white font-semibold">Fund BALANCE : $ {Number(Data?.fundBalance).toFixed(2)}</span> <br/>
-        <span className="text-white font-semibold">Main BALANCE : $ {Number(Data?.walletBalance).toFixed(2)}</span>
-        
-      </p>
-     <p className="text-red-500 text-center text-sm mb-4">Minimum withdraw amount : 10$</p>
-    
+          {/* Pending Warning */}
+          {hasPending && (
+            <div className="flex items-start gap-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
+              <AlertCircle className="h-5 w-5 text-yellow-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-yellow-400 font-semibold text-sm">Pending Request Active</p>
+                <p className="text-yellow-300/70 text-xs mt-1">You already have a pending withdrawal request. New requests can only be submitted after the current one is processed.</p>
+              </div>
+            </div>
+          )}
 
-      <form className="mt-6 space-y-4" onSubmit={confirmBuyNft}>
-   
-        <select
-  value={withdrawMethod}
-  onChange={(e) => setWithdrawMethod(e.target.value)}
-  className="w-full bg-[#e8f0fe] text-black py-2 px-4 rounded outline-none"
->
- <option value="">Select Method</option>
-  <option value="USDT.TRC20">USDT.TRC20</option>
-  <option value="USDT.BEP20">USDT.BEP20</option>
-</select>
-        <input
-          type="text"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Amount"
-          className="w-full bg-[#e8f0fe] text-black py-2 px-4 rounded outline-none"
-        />
-       
-      
-        <button
-          type="submit"
-          className="w-full bg-[#e4ff35] text-black font-bold py-2 rounded hover:bg-lime-300 transition"
-        >
-          Submit
-        </button>
-      </form>
+          {/* Withdrawal Form */}
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6 space-y-5">
+            <div className="flex items-center gap-2 mb-2">
+              <Wallet className="h-5 w-5 text-cyan-400" />
+              <h2 className="text-white font-bold text-lg">Withdraw Balance</h2>
+            </div>
+
+            {/* Rules */}
+            <div className="bg-slate-800/60 rounded-xl p-4 space-y-2 text-sm">
+              <div className="flex items-center gap-2 text-slate-300">
+                <CheckCircle className="h-4 w-4 text-emerald-400 shrink-0" />
+                Minimum withdrawal: <span className="text-white font-semibold ml-1">$5</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-300">
+                <Info className="h-4 w-4 text-red-400 shrink-0" />
+                Admin charge: <span className="text-red-400 font-semibold ml-1">10%</span> deducted from amount
+              </div>
+              <div className="flex items-center gap-2 text-slate-300">
+                <AlertCircle className="h-4 w-4 text-yellow-400 shrink-0" />
+                Only <span className="text-white font-semibold mx-1">1 pending request</span> allowed at a time
+              </div>
+            </div>
+
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <label className="text-slate-400 text-sm mb-1.5 block">Withdrawal Method</label>
+                <select
+                  value={withdrawMethod}
+                  onChange={(e) => setWithdrawMethod(e.target.value)}
+                  className="w-full bg-slate-800 border border-slate-600 text-white py-3 px-4 rounded-xl outline-none focus:border-cyan-500 transition-colors"
+                >
+                  <option value="">Select Method</option>
+                  <option value="USDT.TRC20">USDT (TRC20)</option>
+                  <option value="USDT.BEP20">USDT (BEP20)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="text-slate-400 text-sm mb-1.5 block">Amount (USD)</label>
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="Min $5"
+                  min="5"
+                  step="0.01"
+                  className="w-full bg-slate-800 border border-slate-600 text-white py-3 px-4 rounded-xl outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-600"
+                />
+              </div>
+
+              {/* Breakdown */}
+              {amount && Number(amount) >= 5 && (
+                <div className="bg-slate-800/60 border border-slate-700 rounded-xl p-4 space-y-2 text-sm">
+                  <div className="flex justify-between text-slate-300">
+                    <span>Requested Amount</span>
+                    <span className="text-white font-semibold">${Number(amount).toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Admin Charge (10%)</span>
+                    <span className="text-red-400 font-semibold">-${adminCharge}</span>
+                  </div>
+                  <div className="border-t border-slate-700 pt-2 flex justify-between">
+                    <span className="text-slate-300 font-semibold">You Will Receive</span>
+                    <span className="text-emerald-400 font-bold text-base">${payableAmount}</span>
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={hasPending}
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-3 rounded-xl hover:from-cyan-400 hover:to-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {hasPending ? 'Pending Request Active' : 'Submit Withdrawal Request'}
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
     </div>
-  </div>
-
-
-   </div>
-  )
+  );
 }
 
-export default WithdrawPage
+export default WithdrawPage;

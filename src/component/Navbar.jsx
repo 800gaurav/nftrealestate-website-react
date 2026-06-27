@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, TrendingUp } from 'lucide-react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -15,43 +17,64 @@ const navigate = useNavigate()
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-
   const navItems = [
-    { name: "HOME", path: "/" },
-    { name: "Plans", path: "/incomePlans" },
-    { name: "Stats", path: "/stats" },
-    { name: "Terms & Conditions", path: "/termsConditions" },
-    { name: "About Us", path: "/About" },
+    { name: "HOME", path: "/#home" },
+    { name: "About Us", path: "/#about" },
+    { name: "Services", path: "/#services" },
+    { name: "Packages", path: "/#packages" },
+    { name: "Income Plan", path: "/#incomes" },
+    { name: "Rewards", path: "/#rewards" },
+    { name: "Terms & Conditions", path: "/termsConditions" }
   ];
 
+  const handleNavClick = (e, path) => {
+    setIsMobileMenuOpen(false);
+    if (path.startsWith("/#")) {
+      const id = path.split("#")[1];
+      if (location.pathname === "/") {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+          window.history.pushState(null, "", path);
+        }
+      }
+    }
+  };
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-gray-900/95 backdrop-blur-lg border-b border-gray-700' : 'bg-transparent'
-      }`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-[#070b13]/90 backdrop-blur-lg border-b border-yellow-500/10' : 'bg-transparent'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-15">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center cursor-pointer" onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
             <img
               src="/Images/logo1.png"
-              alt="SecureTrade Logo"
-              className="h-25 w-24  object-contain mt-1"
+              alt="NFT RealEstate Logo"
+              className="h-16 w-auto object-contain mt-1"
             />
           </div>
 
-          <div className="hidden lg:flex items-center gap-8 font-semibold text-sm tracking-wide">
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-6 font-semibold text-xs tracking-wider">
             {navItems.map(({ name, path }) => (
               <NavLink
                 key={name}
                 to={path}
+                onClick={(e) => handleNavClick(e, path)}
                 className={({ isActive }) =>
-                  `relative group text-sm xl:text-base transition duration-200 ${isActive
-                    ? "text-[#00E676] font-bold"
-                    : "text-white hover:text-[#FF4D6D]"
+                  `relative group py-2 transition duration-200 ${
+                    (path.startsWith("/#") && location.pathname === "/" && location.hash === path.substring(1)) || 
+                    (!path.startsWith("/#") && location.pathname === path)
+                      ? "text-yellow-400 font-bold"
+                      : "text-gray-300 hover:text-white"
                   }`
                 }
               >
                 {name}
-                <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-gradient-to-r from-[#FF4D6D] to-[#00BFFF] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-amber-500 transition-all duration-300 group-hover:w-full"></span>
               </NavLink>
             ))}
           </div>
@@ -60,33 +83,22 @@ const navigate = useNavigate()
           <div className="hidden md:flex items-center space-x-4">
             <NavLink
               to="/login"
-              className={({ isActive }) =>
-                `relative group text-sm xl:text-base transition duration-200 ${isActive
-                  ? "text-[#00E676] font-bold"
-                  : "text-white hover:text-blue-400"
-                }`
-              }
+              className="text-sm font-semibold text-gray-300 hover:text-white transition duration-200"
             >
               Login
             </NavLink>
 
             <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                `relative group text-sm xl:text-base px-6 py-2 rounded-lg transition-all duration-300 transform ${isActive
-                  ? "bg-gradient-to-r from-blue-600 to-green-500 text-white scale-105"
-                  : "bg-gradient-to-r from-blue-500 to-green-400 text-white hover:from-blue-600 hover:to-green-500 hover:scale-105"
-                }`
-              }
+              to="/signup"
+              className="relative bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs hover:from-yellow-600 hover:to-amber-700 hover:scale-105 transition-all duration-300 shadow-md shadow-yellow-500/5 hover:shadow-yellow-500/15"
             >
               Register
             </NavLink>
-
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white"
+            className="lg:hidden text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -95,26 +107,30 @@ const navigate = useNavigate()
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-gray-900/95 backdrop-blur-lg border-b border-gray-700">
-            <div className="px-4 py-4 space-y-4">
+          <div className="lg:hidden absolute top-20 left-0 right-0 bg-[#070b13]/95 backdrop-blur-lg border-b border-yellow-500/10">
+            <div className="px-4 py-6 space-y-4">
               {navItems.map(({ name, path }) => (
                 <NavLink
                   key={name}
-                  to = {path}
-                  className="block text-gray-300 hover:text-white transition-colors duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  to={path}
+                  onClick={(e) => handleNavClick(e, path)}
+                  className="block text-gray-300 hover:text-white transition-colors duration-300 font-semibold text-sm"
                 >
                   {name}
                 </NavLink>
               ))}
-              <div className="pt-4 border-t border-gray-700 space-y-4">
-                {/* <button className="block w-full text-left text-white hover:text-blue-400 transition-colors duration-300">
-                  Login
-                </button> */}
-                <button className="w-full bg-gradient-to-r from-blue-500 to-green-400 text-white px-6 py-2 rounded-lg hover:from-blue-600 hover:to-green-500 transition-all duration-300"
-                onClick={()=> navigate('/login')}
+              <div className="pt-4 border-t border-gray-800 space-y-4">
+                <button
+                  className="w-full bg-slate-900 border border-gray-800 text-white px-6 py-2.5 rounded-xl text-xs hover:bg-slate-950 transition-all duration-300 font-bold"
+                  onClick={() => { setIsMobileMenuOpen(false); navigate('/login'); }}
                 >
-                  Login 
+                  Login
+                </button>
+                <button
+                  className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-950 px-6 py-2.5 rounded-xl text-xs hover:from-yellow-600 hover:to-amber-700 transition-all duration-300 font-bold"
+                  onClick={() => { setIsMobileMenuOpen(false); navigate('/signup'); }}
+                >
+                  Register
                 </button>
               </div>
             </div>

@@ -4,6 +4,9 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      screens: {
+        xs: "400px",
+      },
       colors: {
         // Custom colors for the NFT theme
         autonix: {

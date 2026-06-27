@@ -316,13 +316,13 @@ console.log(coins)
                 
                 <div className="bg-yellow-50 p-4 rounded-xl">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-gray-600 font-medium">ROI Income</h3>
+                    <h3 className="text-gray-600 font-medium">Staking Income</h3>
                     <BarChart3 className="w-5 h-5 text-yellow-500" />
                   </div>
                   <p className="text-2xl font-bold text-gray-900">
                     {formatCurrency(roiIncome || plan.dailyIncome)}
                   </p>
-                  <p className="text-sm text-gray-500 mt-1">Return on investment</p>
+                  <p className="text-sm text-gray-500 mt-1">Service package staking income</p>
                 </div>
               </div>
             </motion.div>

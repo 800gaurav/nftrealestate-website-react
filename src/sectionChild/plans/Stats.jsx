@@ -1,300 +1,164 @@
-import React from 'react';
-import { TrendingUp, Zap, Users, DollarSign, Shield, Globe, Cpu, BarChart3 } from 'lucide-react';
+import {
+  TrendingUp, Users, Globe, Shield, Zap, BarChart3,
+  Building2, Cpu, Lock, Smartphone, Plane, BookOpen,
+  ShoppingBag, HeartPulse, Briefcase, Wheat, Landmark,
+  AreaChart, Wallet
+} from 'lucide-react';
+
+const services = [
+  { icon: Building2, title: "Real Estate Services", desc: "Global brokerage and high-value asset acquisition." },
+  { icon: TrendingUp, title: "Property Investment", desc: "Strategic capital allocation in prime global markets." },
+  { icon: Shield, title: "Property Management", desc: "End-to-end maintenance and tenant lifecycle management." },
+  { icon: Wallet, title: "NFT Real Estate", desc: "Fractional ownership powered by blockchain technology." },
+  { icon: Lock, title: "Digital Asset Services", desc: "Secure custody and trading of tokenized assets." },
+  { icon: ShoppingBag, title: "E-Commerce", desc: "Integrated marketplace for luxury lifestyle goods." },
+  { icon: Plane, title: "Tour & Travel", desc: "Premium concierge and global travel experiences." },
+  { icon: Landmark, title: "Banking Services", desc: "Decentralized finance and wealth management tools." },
+  { icon: BookOpen, title: "Education Services", desc: "Blockchain and real estate investment masterclasses." },
+  { icon: Shield, title: "Insurance Services", desc: "Comprehensive risk coverage for physical/digital assets." },
+  { icon: Briefcase, title: "Job Services", desc: "Global career opportunities in the Web3 ecosystem." },
+  { icon: AreaChart, title: "Trading Services", desc: "Advanced tools for real-time asset exchange." },
+  { icon: Wheat, title: "Agriculture Services", desc: "Sustainable land investment and agri-tech solutions." },
+  { icon: HeartPulse, title: "Health Services", desc: "Integrated wellness and healthcare access for members." },
+  { icon: Smartphone, title: "Business Consulting", desc: "Strategic advisory for enterprise digital transformation." },
+];
+
+const techStack = [
+  { icon: Cpu, title: "Blockchain Layer", desc: "Immutable distributed ledger for property registration and NFT minting.", color: "text-cyan-400" },
+  { icon: Zap, title: "Smart Contracts", desc: "Automated execution of property yields, transfers, and ownership logic.", color: "text-yellow-400" },
+  { icon: Lock, title: "Security Layer", desc: "Enterprise-grade encryption, KYC/AML verification, and asset protection.", color: "text-emerald-400" },
+  { icon: Globe, title: "Global Access", desc: "Cross-platform accessibility via web, mobile, and API integrations.", color: "text-blue-400" },
+];
 
 const Stats = () => {
-    return (
-        <div className="min-h-screen  text-white py-16 px-4 mt-16 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
-                {/* Header */}
-                <div className="text-center mb-16">
-                    <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                        Jupiter Ecosystem Stats
-                    </h1>
-                    <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                        Discover the power of Jupiter's decentralized exchange and token economy
-                    </p>
-                </div>
+  return (
+    <div className="min-h-screen bg-slate-950 text-white py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-20">
 
-                {/* Exchange Lifted Section */}
-                <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-8 border border-gray-700 mb-16">
-                    <div className="flex flex-col md:flex-row items-center gap-8">
-                        <div className="flex-1">
-                            <h2 className="text-3xl font-bold mb-6 flex items-center">
-                                <Zap className="h-8 w-8 mr-3 text-blue-400" />
-                                Exchange Listed
-                            </h2>
-                            <p className="text-lg text-gray-300 mb-6">
-                                Jupiter operates on a fully decentralized exchange model, eliminating intermediaries and putting control back in the hands of users.
-                            </p>
-                            <div className="space-y-4">
-                                <div className="flex items-center">
-                                    <div className="bg-blue-500/20 p-2 rounded-full mr-4">
-                                        <Shield className="h-5 w-5 text-blue-400" />
-                                    </div>
-                                    <span className="text-gray-300">Fully decentralized architecture</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <div className="bg-blue-500/20 p-2 rounded-full mr-4">
-                                        <Globe className="h-5 w-5 text-blue-400" />
-                                    </div>
-                                    <span className="text-gray-300">Global access without restrictions</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <div className="bg-blue-500/20 p-2 rounded-full mr-4">
-                                        <Cpu className="h-5 w-5 text-blue-400" />
-                                    </div>
-                                    <span className="text-gray-300">Powered by smart contracts</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex-1">
-                            <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-8 rounded-2xl border border-gray-700">
-                                <div className="text-center mb-6">
-                                    <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 rounded-full mb-4">
-                                        <Zap className="h-8 w-8 text-blue-400" />
-                                    </div>
-                                    <h3 className="text-2xl font-bold">Decentralized Exchange</h3>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="bg-gray-900/50 p-4 rounded-lg text-center">
-                                        <p className="text-sm text-gray-400">Transaction Speed</p>
-                                        <p className="text-xl font-bold text-green-400">65,000 TPS</p>
-                                    </div>
-                                    <div className="bg-gray-900/50 p-4 rounded-lg text-center">
-                                        <p className="text-sm text-gray-400">Fees</p>
-                                        <p className="text-xl font-bold text-green-400">$0.0001</p>
-                                    </div>
-                                    <div className="bg-gray-900/50 p-4 rounded-lg text-center">
-                                        <p className="text-sm text-gray-400">Uptime</p>
-                                        <p className="text-xl font-bold text-green-400">99.99%</p>
-                                    </div>
-                                    <div className="bg-gray-900/50 p-4 rounded-lg text-center">
-                                        <p className="text-sm text-gray-400">Global Users</p>
-                                        <p className="text-xl font-bold text-green-400">2M+</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Token Supply Section */}
-                <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-8 border border-gray-700 mb-16">
-                    <h2 className="text-3xl font-bold mb-8 text-center flex items-center justify-center">
-                        <DollarSign className="h-8 w-8 mr-3 text-purple-400" />
-                        Token Supply
-                    </h2>
-
-                    <div className="grid md:grid-cols-2 gap-8 items-center">
-                        <div>
-                            <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 p-6 rounded-2xl border border-gray-700 mb-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="flex items-center">
-                                        <div className="bg-purple-500/20 p-2 rounded-full mr-3">
-                                            <DollarSign className="h-5 w-5 text-purple-400" />
-                                        </div>
-                                        <h3 className="text-xl font-bold">Jupiter Token (JUP)</h3>
-                                    </div>
-                                    <div className="bg-purple-500/20 px-3 py-1 rounded-full text-sm">
-                                        JUP
-                                    </div>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                                        <span className="text-gray-400">Total Supply:</span>
-                                        <span className="text-xl font-bold text-white">7,000,000,000</span>
-                                    </div>
-                                    <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                                        <span className="text-gray-400">Circulating Supply:</span>
-                                        <span className="text-xl font-bold text-white">5,250,000,000</span>
-                                    </div>
-                                    <div className="flex justify-between items-center py-2">
-                                        <span className="text-gray-400">Market Cap:</span>
-                                        <span className="text-xl font-bold text-green-400">$1.55 Billion</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-900/50 p-4 rounded-lg">
-                                <h4 className="text-lg font-semibold mb-3">Supply Distribution</h4>
-                                <div className="space-y-3">
-                                    <div>
-                                        <div className="flex justify-between mb-1">
-                                            <span className="text-sm text-gray-400">Liquidity Pool</span>
-                                            <span className="text-sm font-medium">40%</span>
-                                        </div>
-                                        <div className="w-full bg-gray-700 rounded-full h-2">
-                                            <div className="bg-blue-500 h-2 rounded-full" style={{ width: '40%' }}></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-between mb-1">
-                                            <span className="text-sm text-gray-400">Team & Development</span>
-                                            <span className="text-sm font-medium">20%</span>
-                                        </div>
-                                        <div className="w-full bg-gray-700 rounded-full h-2">
-                                            <div className="bg-purple-500 h-2 rounded-full" style={{ width: '20%' }}></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-between mb-1">
-                                            <span className="text-sm text-gray-400">Ecosystem Rewards</span>
-                                            <span className="text-sm font-medium">25%</span>
-                                        </div>
-                                        <div className="w-full bg-gray-700 rounded-full h-2">
-                                            <div className="bg-green-500 h-2 rounded-full" style={{ width: '25%' }}></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-between mb-1">
-                                            <span className="text-sm text-gray-400">Reserve</span>
-                                            <span className="text-sm font-medium">15%</span>
-                                        </div>
-                                        <div className="w-full bg-gray-700 rounded-full h-2">
-                                            <div className="bg-yellow-500 h-2 rounded-full" style={{ width: '15%' }}></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-center">
-                            <div className="relative">
-                                <div className="w-64 h-64 rounded-full border-4 border-purple-500/30 flex items-center justify-center">
-                                    <div className="w-56 h-56 rounded-full border-4 border-blue-500/50 flex items-center justify-center">
-                                        <div className="w-48 h-48 rounded-full border-4 border-green-500/40 flex items-center justify-center">
-                                            <div className="text-center">
-                                                {/* <div className="text-4xl font-bold">Jupiter </div> */}
-                                                <img
-                                                    src="Images/logo1.png"
-                                                    alt="Jupiter Logo"
-                                                    className="h-32 w-32  object-contain mt-1"
-                                                />
-                                                {/* <div className="text-lg text-gray-300 mt-2">7B Supply</div>
-                        <div className="text-lg text-green-400 font-semibold mt-1">$1.55B MCap</div> */}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="absolute top-0 right-0 bg-blue-500/20 rounded-full p-2">
-                                    <TrendingUp className="h-5 w-5 text-blue-400" />
-                                </div>
-                                <div className="absolute bottom-0 left-0 bg-green-500/20 rounded-full p-2">
-                                    <Zap className="h-5 w-5 text-green-400" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Key Highlights Section */}
-                <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-8 border border-gray-700">
-                    <h2 className="text-3xl font-bold mb-8 text-center flex items-center justify-center">
-                        <BarChart3 className="h-8 w-8 mr-3 text-green-400" />
-                        Key Highlights
-                    </h2>
-
-                    <div className="grid md:grid-cols-3 gap-6">
-                        <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-6 rounded-xl border border-gray-700 hover:border-blue-400 transition-colors">
-                            <div className="flex items-center mb-4">
-                                <div className="bg-blue-500/20 p-3 rounded-full mr-4">
-                                    <Users className="h-6 w-6 text-blue-400" />
-                                </div>
-                                <h3 className="text-xl font-semibold">Hybrid Model</h3>
-                            </div>
-                            <p className="text-gray-300">
-                                Revolutionary blockchain-based MLM combined with token economy for sustainable growth and rewards.
-                            </p>
-                        </div>
-
-                        <div className="bg-gradient-to-br from-purple-500/10 to-green-500/10 p-6 rounded-xl border border-gray-700 hover:border-purple-400 transition-colors">
-                            <div className="flex items-center mb-4">
-                                <div className="bg-purple-500/20 p-3 rounded-full mr-4">
-                                    <Zap className="h-6 w-6 text-purple-400" />
-                                </div>
-                                <h3 className="text-xl font-semibold">Solana Speed</h3>
-                            </div>
-                            <p className="text-gray-300">
-                                Leveraging the fast Solana blockchain for instant transactions and minimal fees, enhancing user experience.
-                            </p>
-                        </div>
-
-                        <div className="bg-gradient-to-br from-green-500/10 to-blue-500/10 p-6 rounded-xl border border-gray-700 hover:border-green-400 transition-colors">
-                            <div className="flex items-center mb-4">
-                                <div className="bg-green-500/20 p-3 rounded-full mr-4">
-                                    <TrendingUp className="h-6 w-6 text-green-400" />
-                                </div>
-                                <h3 className="text-xl font-semibold">Dual Earnings</h3>
-                            </div>
-                            <p className="text-gray-300">
-                                Members benefit from both network marketing income and token appreciation, maximizing wealth creation.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="mt-8 grid md:grid-cols-2 gap-6">
-                        <div className="bg-gray-900/50 p-6 rounded-xl border border-gray-700">
-                            <h3 className="text-xl font-semibold mb-4 flex items-center">
-                                <div className="bg-yellow-500/20 p-2 rounded-full mr-3">
-                                    <DollarSign className="h-5 w-5 text-yellow-400" />
-                                </div>
-                                Network Income
-                            </h3>
-                            <ul className="space-y-3 text-gray-300">
-                                <li className="flex items-center">
-                                    <div className="w-2 h-2 bg-yellow-400 rounded-full mr-3"></div>
-                                    <span>Multiple income streams from referrals</span>
-                                </li>
-                                <li className="flex items-center">
-                                    <div className="w-2 h-2 bg-yellow-400 rounded-full mr-3"></div>
-                                    <span>Daily rewards and bonuses</span>
-                                </li>
-                                <li className="flex items-center">
-                                    <div className="w-2 h-2 bg-yellow-400 rounded-full mr-3"></div>
-                                    <span>Residual income from team building</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div className="bg-gray-900/50 p-6 rounded-xl border border-gray-700">
-                            <h3 className="text-xl font-semibold mb-4 flex items-center">
-                                <div className="bg-green-500/20 p-2 rounded-full mr-3">
-                                    <TrendingUp className="h-5 w-5 text-green-400" />
-                                </div>
-                                Asset Appreciation
-                            </h3>
-                            <ul className="space-y-3 text-gray-300">
-                                <li className="flex items-center">
-                                    <div className="w-2 h-2 bg-green-400 rounded-full mr-3"></div>
-                                    <span>Token value growth with adoption</span>
-                                </li>
-                                <li className="flex items-center">
-                                    <div className="w-2 h-2 bg-green-400 rounded-full mr-3"></div>
-                                    <span>Limited supply of 7 billion tokens</span>
-                                </li>
-                                <li className="flex items-center">
-                                    <div className="w-2 h-2 bg-green-400 rounded-full mr-3"></div>
-                                    <span>Utility within Jupiter ecosystem</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Call to Action */}
-                <div className="text-center mt-16">
-                    <h2 className="text-3xl font-bold mb-6">Join the Jupiter Revolution</h2>
-                    <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-                        Be part of the future of decentralized finance and network marketing with Jupiter's innovative ecosystem.
-                    </p>
-                    <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-xl">
-                        Get Started with Jupiter
-                    </button>
-                </div>
-            </div>
+        {/* Header */}
+        <div className="text-center space-y-3">
+          <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-1.5 text-cyan-400 text-sm font-medium">
+            <Building2 className="h-4 w-4" /> Services Ecosystem
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold">
+            Comprehensive <span className="text-cyan-400">Solutions</span>
+          </h1>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            NFT RealEstate Corp. offers 15+ digital & physical asset solutions across real estate, finance, lifestyle, and technology.
+          </p>
         </div>
-    );
+
+        {/* Global Stats */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { value: "10+", label: "Years in Market", icon: BarChart3, color: "text-cyan-400" },
+            { value: "$2B+", label: "Assets Managed", icon: TrendingUp, color: "text-emerald-400" },
+            { value: "50k+", label: "Properties Listed", icon: Building2, color: "text-blue-400" },
+            { value: "120+", label: "Countries Present", icon: Globe, color: "text-purple-400" },
+          ].map((s) => (
+            <div key={s.label} className="bg-slate-900 border border-slate-700 rounded-2xl p-6 text-center hover:border-slate-500 transition-colors">
+              <s.icon className={`h-8 w-8 ${s.color} mx-auto mb-3`} />
+              <p className={`text-4xl font-extrabold ${s.color}`}>{s.value}</p>
+              <p className="text-slate-400 text-sm mt-2">{s.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Services Grid */}
+        <section>
+          <h2 className="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+            <Briefcase className="h-6 w-6 text-purple-400" /> 15+ Service Verticals
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {services.map((s) => (
+              <div key={s.title} className="bg-slate-900/60 border border-slate-700 rounded-xl p-5 flex items-start gap-4 hover:border-slate-500 transition-colors">
+                <div className="bg-cyan-500/10 p-2.5 rounded-lg shrink-0">
+                  <s.icon className="h-5 w-5 text-cyan-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">{s.title}</p>
+                  <p className="text-slate-400 text-sm mt-1">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Network Architecture */}
+        <section className="bg-slate-900/60 border border-slate-700 rounded-2xl p-8">
+          <h2 className="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+            <Users className="h-6 w-6 text-orange-400" /> Global Network Architecture
+          </h2>
+          <p className="text-center text-slate-400 mb-8 text-sm">Scalable 4-Level Ecosystem Framework</p>
+          <div className="flex flex-col items-center gap-4">
+            <div className="bg-cyan-500/20 border border-cyan-500/40 rounded-xl px-8 py-3 text-center">
+              <p className="font-bold text-cyan-300 text-lg">Global Platform</p>
+            </div>
+            <div className="flex gap-8">
+              <div className="bg-blue-500/20 border border-blue-500/40 rounded-xl px-6 py-3 text-center">
+                <p className="font-semibold text-blue-300">Left Division</p>
+              </div>
+              <div className="bg-blue-500/20 border border-blue-500/40 rounded-xl px-6 py-3 text-center">
+                <p className="font-semibold text-blue-300">Right Division</p>
+              </div>
+            </div>
+            <div className="flex gap-4 flex-wrap justify-center">
+              {["Regional A", "Regional B", "Regional C", "Regional D"].map((r) => (
+                <div key={r} className="bg-slate-800 border border-slate-600 rounded-lg px-4 py-2 text-sm text-slate-300">{r}</div>
+              ))}
+            </div>
+            <p className="text-slate-500 text-sm text-center">Unlimited depth supporting millions of global stakeholders</p>
+          </div>
+        </section>
+
+        {/* Technology Infrastructure */}
+        <section>
+          <h2 className="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+            <Cpu className="h-6 w-6 text-cyan-400" /> Technology Infrastructure
+          </h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {techStack.map((t) => (
+              <div key={t.title} className="bg-slate-900 border border-slate-700 rounded-xl p-6 hover:border-slate-500 transition-colors">
+                <t.icon className={`h-8 w-8 ${t.color} mb-4`} />
+                <h3 className="font-bold text-white mb-2">{t.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{t.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* NFT Ecosystem Flow */}
+        <section className="bg-gradient-to-r from-cyan-500/5 to-blue-500/5 border border-cyan-500/20 rounded-2xl p-8">
+          <h2 className="text-2xl font-bold text-center mb-8">NFT-Powered Real Estate Ecosystem</h2>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+            {[
+              "Physical Property",
+              "Asset Verification",
+              "Blockchain Registration",
+              "Digital Ownership",
+              "NFT Representation",
+              "Global Access",
+            ].map((step, i, arr) => (
+              <div key={step} className="flex items-center gap-2">
+                <div className="bg-slate-900 border border-cyan-500/30 rounded-lg px-4 py-2 text-slate-300">
+                  {step}
+                </div>
+                {i < arr.length - 1 && <span className="text-cyan-400">→</span>}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Footer Info */}
+        <div className="text-center text-slate-500 text-sm border-t border-slate-800 pt-8">
+          <p className="font-semibold text-slate-400 mb-1">NFT REALESTATE CORP.</p>
+          <p>www.nftrealestate.us · support@nftrealestate.us</p>
+          <p>1250 Broadway, NY 10001 · © 2025 All Rights Reserved · Est. 2013</p>
+        </div>
+
+      </div>
+    </div>
+  );
 };
 
 export default Stats;

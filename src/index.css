@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/* react-d3-tree connector lines fix */
+.rd3t-link {
+  stroke: #3b82f6 !important;
+  stroke-width: 2px !important;
+  fill: none !important;
+  opacity: 1 !important;
+}
+.rd3t-tree-container text,
+.rd3t-tree-container tspan {
+  fill: white !important;
+}
+
 /* Global styles for mobile responsiveness */
 
 /* Responsive navbar padding */

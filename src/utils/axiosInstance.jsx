@@ -12,8 +12,11 @@ import { useAuth } from '../context/AuthContext';
 // export const baseUrl = 'https://backend.jupitertoken.us';
 // export const imgBaseUrl = 'https://backend.jupitertoken.us';
 
-export const baseUrl = 'http://api.jupiter.genzteck.com';
-export const imgBaseUrl = 'http://api.jupiter.genzteck.com';
+// export const baseUrl = 'http://api.jupiter.genzteck.com';
+// export const imgBaseUrl = 'http://api.jupiter.genzteck.com';
+
+export const baseUrl = 'http://localhost:5000';
+export const imgBaseUrl = 'http://localhost:5000';
 
 
 
