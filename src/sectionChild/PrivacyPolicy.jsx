@@ -25,7 +25,7 @@ const PrivacyPolicy = () => {
                 1. Introduction
               </h2>
               <p>
-                JupiterToken ("we", "our", "us") respects your privacy and is
+                NFT RealEstate ("we", "our", "us") respects your privacy and is
                 committed to protecting your personal information. This
                 Privacy Policy explains how we collect, use, and safeguard
                 your data when you use our website, mobile application, and
@@ -118,7 +118,7 @@ const PrivacyPolicy = () => {
                 Policy, please contact us at:
               </p>
               <p className="mt-2 font-medium text-gray-800">
-                📧 support@jupiter.com
+                📧 supportnftrealestate@gmail.com
               </p>
             </section>
 

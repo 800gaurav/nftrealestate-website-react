@@ -30,7 +30,7 @@ const Footer = () => {
               <img
                 src="/Images/logo1.png"
                 alt="SecureTrade Logo"
-                className="h-32 w-32  object-contain "
+                className="h-44 w-44 object-contain"
               />
             </div>
           </div>
@@ -42,8 +42,8 @@ const Footer = () => {
             <span>Secure • Transparent • Trusted</span>
           </div>
           <p className="text-xs mt-4">
-            © 2025 Jupiter. All Rights Reserved. <br />
-            Powered by Jupiter (JUP) on the Solana Blockchain.
+            © 2025 NFT RealEstate Corp. All Rights Reserved. <br />
+            Powered by NFT RealEstate on the Blockchain.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ const Footer = () => {
               { name: "HOME", path: "/" },
               { name: "Income Plans", path: "/incomePlans" },
               { name: "Stats", path: "/stats" },
-              { name: "Terms & Conditions", path: "/termsConditions" },
+              // { name: "Terms & Conditions", path: "/termsConditions" },
               { name: "About", path: "/About" },
             ].map((item) => (
               <li key={item.name}>
@@ -107,7 +107,7 @@ const Footer = () => {
             </div>
             <div className="flex items-center">
               <Mail className="h-4 w-4 mr-3 text-blue-400" />
-              <a href="mailto:support@jupiter.com" className="text-sm hover:text-white">contact@jupitertoken.us</a>
+              <a href="mailto:nftrealestate.us@gmail.com" className="text-sm hover:text-white">nftrealestate.us@gmail.com</a>
             </div>
             {/* <div className="flex items-center">
               <Phone className="h-4 w-4 mr-3 text-blue-400" />
@@ -116,7 +116,7 @@ const Footer = () => {
           </div>
 
           {/* Social Media */}
-          <div>
+          {/* <div>
             <p className="text-sm mb-3">Follow us on social media</p>
             <div className="flex space-x-3">
               {[
@@ -136,7 +136,7 @@ const Footer = () => {
                 </a>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -146,9 +146,6 @@ const Footer = () => {
           {/* <span>JUP Token Contract: 0x1234...5678</span> */}
         </div>
         <div className="flex space-x-6 text-xs">
-          <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-          <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
         </div>
         <button
           onClick={scrollToTop}

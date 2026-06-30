@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   LayoutDashboard, Menu, X, ChevronDown, ChevronRight,
   Sparkles, Home, Users, Network,
-  TrendingUp, History,
+  TrendingUp, History, Award,
   Wallet, ArrowUpFromLine, ClockArrowDown,
   Key, UserRoundPen, LogOut, Copy, Check,
   ShieldCheck, Gift, ChevronLeft,
@@ -18,6 +18,7 @@ const MENU = [
   { label: "Dashboard",     icon: Home,          to: "/dashboard", end: true },
   { label: "Buy Package",   icon: Sparkles,      to: "/dashboard/funds/deposit", highlight: true },
   { label: "Income Report", icon: TrendingUp,    to: "/dashboard/income/report" },
+  { label: "Rank Reward",   icon: Award,         to: "/dashboard/income/rank-reward" },
   {
     label: "Team", icon: Users,
     children: [
@@ -32,12 +33,7 @@ const MENU = [
       { label: "Withdraw History", icon: ClockArrowDown, to: "/dashboard/funds/withdraw-history" },
     ],
   },
-  {
-    label: "Deposit", icon: Wallet,
-    children: [
-      { label: "Deposit Report", icon: History, to: "/dashboard/funds/deposit-report" },
-    ],
-  },
+
   {
     label: "Account", icon: UserRoundPen,
     children: [
@@ -160,7 +156,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
       <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-4 h-16 border-b border-white/8 shrink-0`}>
         {!collapsed && (
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => { navigate("/dashboard"); closeMobile(); }}>
-            <img src="/Images/logo1.png" alt="Logo" className="h-8 w-auto object-contain" />
+            <img src="/Images/logo1.png" alt="Logo" className="h-35 w-auto object-contain" />
           </div>
         )}
         {collapsed && (

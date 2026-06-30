@@ -18,6 +18,8 @@ const ActivateAccount = () => {
   const [Data, setData] = useState({})
   const [selectedExchange, setSelectedExchange] = useState('');
   const [showExchangeSelector, setShowExchangeSelector] = useState(false);
+  const [hasFundBalance, setHasFundBalance] = useState(false);
+  const [showFundConfirmModal, setShowFundConfirmModal] = useState(false);
  const { loading, setloading} = useAuth();
   const { fetchData } = useAxios();
   const { price } = useParams();
@@ -68,32 +70,34 @@ const ActivateAccount = () => {
 
   const selectExchange = async (exchange) => {
     try {
-   setloading(true)
-      await fetchData({
+      setloading(true);
+      const res = await fetchData({
         url: `/api/v1/user/nft/purchase/send-otp-buy-nft/${userId}`,
         method: 'POST',
         data: { nftId: selectedNFT._id },
       });
       setSelectedExchange(exchange);
-      toast.success('OTP sent to your email');
-   
-      setShowExchangeModal(true);
-      setloading(false)
+      setHasFundBalance(res?.hasFundBalance || false);
+
+      if (res?.hasFundBalance) {
+        toast.success('OTP sent to your email');
+        setShowFundConfirmModal(true);
+      } else {
+        toast.success('Proceed with OxaPay payment');
+        setShowExchangeModal(true);
+      }
     } catch (error) {
-      
       toast.error(error.message);
-      setloading(false)
     } finally {
-      
       setShowExchangeSelector(false);
-      setloading(false)
+      setloading(false);
     }
   };
 
   const handleConfirmBuy = async (e) => {
     e.preventDefault();
     try {
-      setloading(true)
+      setloading(true);
       const res = await fetchData({
         url: '/api/v1/user/nft/purchase/buy-nft',
         method: 'POST',
@@ -105,17 +109,22 @@ const ActivateAccount = () => {
         },
       });
       if (res.success) {
-        toast.success('NFT purchased successfully');
+        toast.success(res.message || 'Package purchased successfully');
         setShowExchangeModal(false);
+        setShowFundConfirmModal(false);
         setSelectedNFT(null);
+        setBuyOtp('');
+        setTxnPass('');
+        setUserIdInput('');
         fetchNfts();
-        setloading(false)
+        fetchbalancData();
+      } else {
+        toast.error(res.message || 'Purchase failed');
       }
     } catch (error) {
       toast.error(error.message);
-      setloading(false)
-    }finally {
-      setloading(false)
+    } finally {
+      setloading(false);
     }
   };
 
@@ -225,6 +234,79 @@ const ActivateAccount = () => {
                 className="w-full bg-lime-400 text-black font-bold py-2 rounded hover:bg-lime-300"
               >
                 Confirm Purchase
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Fund Wallet Confirm Modal */}
+      {showFundConfirmModal && selectedNFT && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
+          <div className="bg-[#0d1117] border-2 border-yellow-400 rounded-xl w-full max-w-md p-6 relative">
+            <button
+              onClick={() => setShowFundConfirmModal(false)}
+              className="absolute top-2 right-4 text-white text-2xl hover:text-red-500"
+            >
+              &times;
+            </button>
+            <div className="text-center mb-4">
+              <div className="text-yellow-400 text-3xl mb-2">💰</div>
+              <h2 className="text-white font-bold text-xl mb-1">Fund Wallet Purchase</h2>
+              <p className="text-gray-400 text-sm">Your Fund Wallet has sufficient balance to buy this package.</p>
+            </div>
+
+            {/* Balance Info */}
+            <div className="bg-gray-800 rounded-lg p-4 mb-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Fund Wallet Balance</span>
+                <span className="text-yellow-400 font-bold">${Data?.fundBalance || 0}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Package Amount</span>
+                <span className="text-white font-bold">${selectedNFT.price}</span>
+              </div>
+              <div className="flex justify-between text-sm border-t border-gray-700 pt-2">
+                <span className="text-gray-400">Balance After Purchase</span>
+                <span className="text-green-400 font-bold">${((Data?.fundBalance || 0) - selectedNFT.price).toFixed(2)}</span>
+              </div>
+            </div>
+
+            <p className="text-center text-yellow-300 text-sm font-medium mb-4">
+              Amount will be deducted from your Fund Wallet. Confirm to proceed.
+            </p>
+
+            <form onSubmit={handleConfirmBuy} className="space-y-3">
+              <input
+                type="text"
+                placeholder="Your User ID"
+                value={userIdInput}
+                onChange={(e) => setUserIdInput(e.target.value)}
+                className="w-full bg-white text-black py-2 px-4 rounded"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Enter OTP (sent to your email)"
+                value={buyOtp}
+                onChange={(e) => setBuyOtp(e.target.value)}
+                className="w-full bg-white text-black py-2 px-4 rounded"
+                required
+              />
+              <input
+                type="password"
+                placeholder="Transaction Password"
+                value={txnPass}
+                onChange={(e) => setTxnPass(e.target.value)}
+                className="w-full bg-white text-black py-2 px-4 rounded"
+                required
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-yellow-400 text-black font-bold py-2 rounded hover:bg-yellow-300 disabled:opacity-50"
+              >
+                {loading ? 'Processing...' : 'Confirm Purchase from Fund Wallet'}
               </button>
             </form>
           </div>

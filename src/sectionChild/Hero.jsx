@@ -115,7 +115,7 @@ export const Hero = () => {
 };
 
 // ── ABOUT / WHY INVEST ────────────────────────────────────────────────────
-export const HeroJupiter = () => {
+export const HeroNFTRealEstate = () => {
   const navigate = useNavigate();
 
   const offices = [

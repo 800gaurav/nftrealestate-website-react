@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { CheckCircle, XCircle, Clock, DollarSign, Users, Gift, AlertCircle, Calendar, Download } from 'lucide-react';
 
 const TermsAndConditions = () => {
@@ -22,7 +22,7 @@ const TermsAndConditions = () => {
             Terms & Conditions
           </h1>
           <p className="text-xl text-gray-300">
-            Please read these terms carefully before using Jupiter's services
+            Please read these terms carefully before using NFT RealEstate's services
           </p>
         </div>
 
@@ -117,7 +117,7 @@ const TermsAndConditions = () => {
                     <DollarSign className="h-5 w-5 text-green-400 mr-2" />
                     Deposit Range
                   </h3>
-                  <p className="text-gray-300 mb-4">Minimum deposit: $20 – Maximum deposit: $50,000 per user</p>
+                  <p className="text-gray-300 mb-4">Minimum deposit: $20 â€“ Maximum deposit: $50,000 per user</p>
                   <div className="grid grid-cols-2 gap-4 mt-4">
                     <div className="bg-gray-800/50 p-3 rounded-lg text-center">
                       <p className="text-sm text-gray-400">Minimum</p>
@@ -250,9 +250,9 @@ const TermsAndConditions = () => {
                     <Clock className="h-5 w-5 text-blue-400 mr-2" />
                     Income Updates
                   </h3>
-                  <p className="text-gray-300">Income updates occur between 11:00 PM – 11:59 PM daily.</p>
+                  <p className="text-gray-300">Income updates occur between 11:00 PM â€“ 11:59 PM daily.</p>
                   <div className="mt-3 bg-blue-500/10 p-3 rounded-lg inline-flex items-center">
-                    <span className="font-medium">11:00 PM – 11:59 PM</span>
+                    <span className="font-medium">11:00 PM â€“ 11:59 PM</span>
                   </div>
                 </div>
                 
@@ -272,17 +272,15 @@ const TermsAndConditions = () => {
                     <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
                     Capping Policy
                   </h3>
-                  <p className="text-gray-300">Total capping is 4X (2X Working + 2X Non-working).</p>
+                  <p className="text-gray-300">Working and non-working capping is removed. Only binary pair matching keeps its configured cap.</p>
                   <div className="mt-3 bg-red-500/10 p-3 rounded-lg">
-                    <p className="font-medium">4X Total Capping</p>
+                    <p className="font-medium">Binary Pair Matching Cap Only</p>
                     <div className="flex mt-2">
                       <div className="pr-4 border-r border-gray-700">
-                        <p className="text-sm text-gray-400">Working</p>
-                        <p className="font-bold">2X</p>
+                        <p className="text-sm text-gray-400">Working/Non-working</p><p className="font-bold">No cap</p>
                       </div>
                       <div className="pl-4">
-                        <p className="text-sm text-gray-400">Non-working</p>
-                        <p className="font-bold">2X</p>
+                        <p className="text-sm text-gray-400">Binary Pair</p><p className="font-bold">Capped</p>
                       </div>
                     </div>
                   </div>
@@ -347,7 +345,7 @@ const TermsAndConditions = () => {
         <div className="mt-12 bg-gray-800/30 backdrop-blur-md rounded-2xl p-8 border border-gray-700">
           <h2 className="text-2xl font-bold mb-6 text-center">Acceptance of Terms</h2>
           <p className="text-gray-300 text-center mb-6">
-            By using Jupiter's platform and services, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.
+            By using NFT RealEstate's platform and services, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.
           </p>
           <div className="flex justify-center">
             <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300">

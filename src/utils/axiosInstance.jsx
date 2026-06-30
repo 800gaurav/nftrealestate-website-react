@@ -9,11 +9,11 @@ import { useAuth } from '../context/AuthContext';
 
 // export const baseUrl = 'http://192.168.1.52:6969';
 
-// export const baseUrl = 'https://backend.jupitertoken.us';
-// export const imgBaseUrl = 'https://backend.jupitertoken.us';
+// export const baseUrl = 'https://backend.nftrealestate.us';
+// export const imgBaseUrl = 'https://backend.nftrealestate.us';
 
-// export const baseUrl = 'http://api.jupiter.genzteck.com';
-// export const imgBaseUrl = 'http://api.jupiter.genzteck.com';
+// export const baseUrl = 'http://api.nftrealestate.genzteck.com';
+// export const imgBaseUrl = 'http://api.nftrealestate.genzteck.com';
 
 export const baseUrl = 'http://localhost:5000';
 export const imgBaseUrl = 'http://localhost:5000';

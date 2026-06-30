@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import {
   Building2, TrendingUp, Layers, Rocket, DollarSign,
   ShoppingBag, Plane, Landmark, BookOpen, Shield,
@@ -38,7 +38,7 @@ export default function ServicesPage() {
   const handleContact = (service) => {
     const subject = encodeURIComponent(`Service Enquiry: ${service.title}`);
     const body = encodeURIComponent(`Hello NFT RealEstate Corp. Team,\n\nI am interested in learning more about the "${service.title}" service.\n\nPlease provide details.\n\nThank you.`);
-    window.open(`mailto:support@nftrealestate.us?subject=${subject}&body=${body}`, "_blank");
+    window.open(`mailto:supportnftrealestate@gmail.com?subject=${subject}&body=${body}`, "_blank");
   };
 
   return (
@@ -107,9 +107,9 @@ export default function ServicesPage() {
           <h2 className="text-2xl font-bold text-center mb-8">Income Plan</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { n: "1", title: "Staking Income",    val: "0.5% – 1% Daily",   note: "40% of joining amount staked", color: "text-emerald-400" },
+              { n: "1", title: "Staking Income",    val: "0.5% â€“ 1% Daily",   note: "40% of joining amount staked", color: "text-emerald-400" },
               { n: "2", title: "Sponsor Income",    val: "10%",                note: "On direct referral package",  color: "text-blue-400" },
-              { n: "3", title: "Team Growth Bonus", val: "1% – 3%",            note: "10 directs needed, $100 for 3%", color: "text-purple-400" },
+              { n: "3", title: "Team Growth Bonus", val: "1% â€“ 3%",            note: "10 directs needed, $100 for 3%", color: "text-purple-400" },
               { n: "4", title: "Matching Income",   val: "10%",                note: "2:1 then 1:1, daily cap $50/$100", color: "text-orange-400" },
             ].map(item => (
               <div key={item.n} className="bg-slate-800/60 rounded-xl p-5">
@@ -136,12 +136,12 @@ export default function ServicesPage() {
               </thead>
               <tbody>
                 {[
-                  { icon: "🥉", rank: "Bronze",     biz: "₹1,000",    reward: "Welcome Kit",                   color: "text-amber-600" },
-                  { icon: "🥈", rank: "Silver",     biz: "₹5,000",    reward: "Android Mobile",                color: "text-slate-300" },
-                  { icon: "🥇", rank: "Gold",       biz: "₹20,000",   reward: "Bangkok Tour",                  color: "text-yellow-400" },
-                  { icon: "💎", rank: "Diamond",    biz: "₹50,000",   reward: "Thailand 3N/4D + Car + Foreign D/P", color: "text-cyan-300" },
-                  { icon: "👑", rank: "Crown",      biz: "₹1,00,000", reward: "Fortuner Car",                  color: "text-purple-400" },
-                  { icon: "🌟", rank: "Ambassador", biz: "₹5,00,000", reward: "2% Royalty Income (T/C)",       color: "text-pink-400" },
+                  { icon: "ðŸ¥‰", rank: "Bronze",     biz: "â‚¹1,000",    reward: "Welcome Kit",                   color: "text-amber-600" },
+                  { icon: "ðŸ¥ˆ", rank: "Silver",     biz: "â‚¹5,000",    reward: "Android Mobile",                color: "text-slate-300" },
+                  { icon: "ðŸ¥‡", rank: "Gold",       biz: "â‚¹20,000",   reward: "Bangkok Tour",                  color: "text-yellow-400" },
+                  { icon: "ðŸ’Ž", rank: "Diamond",    biz: "â‚¹50,000",   reward: "Thailand 3N/4D + Car + Foreign D/P", color: "text-cyan-300" },
+                  { icon: "ðŸ‘‘", rank: "Crown",      biz: "â‚¹1,00,000", reward: "Fortuner",                  color: "text-purple-400" },
+                  { icon: "ðŸŒŸ", rank: "Ambassador", biz: "â‚¹5,00,000", reward: "2% Royalty T/C",       color: "text-pink-400" },
                 ].map(r => (
                   <tr key={r.rank} className="border-b border-slate-800 hover:bg-slate-800/30 transition-colors">
                     <td className="py-3 px-4">
@@ -161,9 +161,9 @@ export default function ServicesPage() {
         <div className="bg-gradient-to-r from-yellow-500 to-amber-600 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-extrabold text-slate-900 mb-2">Want to avail any service?</h2>
           <p className="text-slate-800 mb-6">Purchase a package and mail us the service you need. Our team will get back to you within 24 hours.</p>
-          <a href="mailto:support@nftrealestate.us"
+          <a href="mailto:supportnftrealestate@gmail.com"
             className="inline-flex items-center gap-2 bg-slate-950 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-xl transition-colors">
-            <Mail size={18} /> support@nftrealestate.us <ArrowRight size={16} />
+            <Mail size={18} /> supportnftrealestate@gmail.com <ArrowRight size={16} />
           </a>
         </div>
 
@@ -171,3 +171,4 @@ export default function ServicesPage() {
     </div>
   );
 }
+

@@ -22,7 +22,7 @@ const DeleteAccount = () => {
 
             <section>
               <p>
-                At <strong>JupiterToken</strong>, we respect your right to control
+                At <strong>NFT RealEstate</strong>, we respect your right to control
                 your personal data. Users can request the deletion of their
                 account at any time by following the process described below.
               </p>
@@ -53,7 +53,7 @@ const DeleteAccount = () => {
                 Please email your account deletion request to:
               </p>
               <p className="mt-2 font-medium text-gray-800">
-                📧 support@jupiter.com
+                📧 supportnftrealestate@gmail.com
               </p>
             </section>
 

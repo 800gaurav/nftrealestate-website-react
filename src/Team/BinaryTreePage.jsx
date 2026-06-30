@@ -23,9 +23,6 @@ const makeNode = (user, isEmpty = false) => {
       _id: user._id,
       userId: user.userId,
       totalInvested: user.totalInvested || 0,
-      walletBalance: user.walletBalance || 0,
-      leftTeamSp: user.leftTeamSp || 0,
-      rightTeamSp: user.rightTeamSp || 0,
       isActivated: user.isActivated,
       placementSide: user.placementSide,
       createdAt: user.createdAt,
@@ -150,12 +147,10 @@ const Tooltip = ({ user, pos }) => {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
         {[
-          ["User ID",   user.userId    || "N/A"],
-          ["Invested",  `$${user.totalInvested || 0}`],
-          ["Left SP",   user.leftTeamSp  || 0],
-          ["Right SP",  user.rightTeamSp || 0],
-          ["Position",  user.placementSide || "Root"],
-          ["Joined",    user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-IN") : "N/A"],
+          ["User ID",  user.userId || "N/A"],
+          ["Invested", `$${user.totalInvested || 0}`],
+          ["Position", user.placementSide || "Root"],
+          ["Joined",   user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-IN") : "N/A"],
         ].map(([label, value]) => (
           <div key={label} style={{ background: "#1e293b", borderRadius: 8, padding: "6px 10px" }}>
             <p style={{ color: "#64748b", fontSize: 9, margin: 0, textTransform: "uppercase", letterSpacing: 0.8 }}>{label}</p>

@@ -1,37 +1,38 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { NavLink, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import GradientButton from "../reuseis/GradientButton";
-import axios from "axios";
-import { SignupApi } from "../api/SignUp";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import { Eye, EyeOff, User, Mail, Phone, Lock, Key, GitBranch, ArrowLeft, Shield, Zap, Building2 } from "lucide-react";
 import useAxios from "../utils/useAxios";
-import SingupSaveModel from "./SingupSaveModel";
 import { toast } from "react-toastify";
-import { Eye, EyeOff, User, Mail, Phone, Lock, Key, GitBranch } from "lucide-react";
-import AuthWrapper from "../component/wrapper/AuthWrapper";
-import { colors } from "../variables/colors";
 import Button from "../component/wrapper/Button";
 
-
-const avatars = [
-  "/Images/Img1.avif",
-  "/Images/Img2.avif",
-  "/Images/Img3.avif",
-  "/Images/Img4.avif",
-  "/Images/Img5.avif",
-  "/Images/Img6.avif",
+const countryCodes = [
+  { code: '+91', name: 'India', flag: '🇮🇳' },
+  { code: '+1', name: 'USA', flag: '🇺🇸' },
+  { code: '+44', name: 'UK', flag: '🇬🇧' },
+  { code: '+61', name: 'Australia', flag: '🇦🇺' },
+  { code: '+81', name: 'Japan', flag: '🇯🇵' },
+  { code: '+971', name: 'UAE', flag: '🇦🇪' },
 ];
 
-const SignUpPage = () => {
-  const countryCodes = [
-    { code: '+91', name: 'India', flag: '🇮🇳' },
-    { code: '+1', name: 'USA', flag: '🇺🇸' },
-    { code: '+44', name: 'UK', flag: '🇬🇧' },
-    { code: '+61', name: 'Australia', flag: '🇦🇺' },
-    { code: '+81', name: 'Japan', flag: '🇯🇵' },
-    { code: '+971', name: 'UAE', flag: '🇦🇪' },
-  ];
+const InputField = ({ label, required, icon: Icon, error, children }) => (
+  <div className="space-y-1.5">
+    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+      {label} {required && <span className="text-yellow-400">*</span>}
+    </label>
+    <div className="relative">{children}</div>
+    {error && (
+      <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1">
+        <span className="w-1.5 h-1.5 bg-red-400 rounded-full flex-shrink-0" />
+        {error}
+      </p>
+    )}
+  </div>
+);
 
+const inputClass =
+  "w-full pl-10 pr-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:border-yellow-500/60 focus:bg-slate-900 transition-all";
+
+const SignUpPage = () => {
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -42,32 +43,29 @@ const SignUpPage = () => {
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const [referralCodeParems, setReferralCodeParems] = useState(false);
-  const [registerData, setData] = useState(null);
+  const [referralLocked, setReferralLocked] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
-  const { fetchData } = useAxios()
+  const { fetchData } = useAxios();
   const [searchParams] = useSearchParams();
-  const [loading, setLoading] = useState(false)
   const referralID = searchParams.get('referalID');
   const name = searchParams.get('username');
 
   useEffect(() => {
     if (referralID) {
       setReferralCode(referralID);
-      setReferralCodeParems(true);
+      setReferralLocked(true);
     }
-  }, [])
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (password !== confirmPassword) {
       setFieldErrors({ password: "Passwords do not match" });
       return;
     }
-
     const payload = {
       referrerCode: referralCode || null,
       name: username,
@@ -76,279 +74,230 @@ const SignUpPage = () => {
       password,
       side,
     };
-
     try {
-      setLoading(true)
-      const res = await fetchData({
-        url: '/api/v1/user/auth/register',
-        method: 'POST',
-        data: payload
-      });
-
-      setData(res);
+      setLoading(true);
+      const res = await fetchData({ url: '/api/v1/user/auth/register', method: 'POST', data: payload });
       if (res.success) {
-        toast.success('Registration successful!');
-        navigate("/verify-otp", {
-          state: {
-            userdata: res.data.email,
-            fromSignup: true,
-          }
-        });
-        setLoading(false)
+        toast.success('Otp sent successfully on email!');
+        navigate("/verify-otp", { state: { userdata: res.data.email, fromSignup: true } });
       }
     } catch (err) {
       toast.error(err.message);
-      const msg = err.message
-
-      if (msg.includes("Email already in use")) {
-        setFieldErrors({ email: msg });
-      } else if (msg.includes("Invalid referral code")) {
-        setFieldErrors({ referralCode: msg });
-      } else if (msg.includes("All fields are required")) {
-        setFieldErrors({ allrequired: msg });
-      } else {
-        setFieldErrors({ general: msg });
-      }
-      setLoading(false)
+      const msg = err.message;
+      if (msg.includes("Email already in use")) setFieldErrors({ email: msg });
+      else if (msg.includes("Invalid referral code")) setFieldErrors({ referralCode: msg });
+      else if (msg.includes("All fields are required")) setFieldErrors({ allrequired: msg });
+      else setFieldErrors({ general: msg });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <AuthWrapper title="Create Account" subtitle="Join us and start your journey today">
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 relative">
+      {/* Dark overlay for readability over video */}
+      <div className="absolute inset-0 bg-black/50 z-0" />
 
+      <div className="relative z-10 w-full max-w-lg">
+       
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Referral Code Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Referral Code {name && (
-              <span className="font-semibold ml-1" style={{ color: colors.theme1 }}>
-                ({name})
-              </span>
-            )}
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Key size={18} className="text-gray-400" />
-            </div>
-            <input
-              disabled={referralCodeParems}
-              type="text"
-              value={referralCode}
-              onChange={(e) => setReferralCode(e.target.value)}
-              placeholder="Enter referral code (optional)"
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent bg-gray-50 text-gray-900 transition-all disabled:opacity-60"
-              style={{ focusRingColor: colors.theme1 }}
-            />
-          </div>
-          {fieldErrors.referralCode && (
-            <p className="text-sm text-red-500 mt-2 flex items-center">
-              <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
-              {fieldErrors.referralCode}
-            </p>
-          )}
-        </div>
+        {/* Card */}
+        <div className="bg-slate-950/80 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden">
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Placement Side <span className="text-red-500">*</span>
-          </label>
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { value: "left", label: "Left" },
-              { value: "right", label: "Right" },
-            ].map((item) => (
-              <button
-                key={item.value}
-                type="button"
-                onClick={() => setSide(item.value)}
-                className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
-                  side === item.value
-                    ? "border-transparent text-white shadow-md"
-                    : "border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300"
-                }`}
-                style={side === item.value ? { background: `linear-gradient(to right, ${colors.theme1}, ${colors.theme2})` } : {}}
-              >
-                <GitBranch size={16} />
-                {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Username Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Username <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <User size={18} className="text-gray-400" />
-            </div>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              placeholder="Enter your username"
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent bg-gray-50 text-gray-900 transition-all"
-              style={{ focusRingColor: colors.theme1 }}
-            />
-          </div>
-        </div>
-
-        {/* Phone Input with Country Code */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Phone Number <span className="text-red-500">*</span>
-          </label>
-          <div className="flex gap-3">
-            <div className="relative w-1/3">
-              <select
-                value={selectedCountry.code}
-                onChange={(e) => setSelectedCountry(countryCodes.find(c => c.code === e.target.value))}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent bg-gray-50 text-gray-900 appearance-none"
-                style={{ focusRingColor: colors.theme1 }}
-              >
-                {countryCodes.map((item, index) => (
-                  <option key={index} value={item.code}>
-                    {item.flag} {item.code}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Phone size={16} className="text-gray-400" />
+          {/* Card Header */}
+          <div className="px-8 pt-8 pb-6 border-b border-slate-800/60">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="bg-yellow-500/10 border border-yellow-500/20 p-2 rounded-lg">
+                <Building2 size={18} className="text-yellow-400" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">Create Account</h1>
+                <p className="text-xs text-slate-400">Join NFT RealEstate and start earning</p>
               </div>
             </div>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="Phone number"
-              className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent bg-gray-50 text-gray-900 transition-all"
-              style={{ focusRingColor: colors.theme1 }}
-            />
           </div>
-        </div>
 
-        {/* Email Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Mail size={18} className="text-gray-400" />
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="px-8 py-6 space-y-5">
+
+            {/* Referral Code */}
+            <InputField label="Referral Code" error={fieldErrors.referralCode}>
+              <Key size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                disabled={referralLocked}
+                type="text"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value)}
+                placeholder={name ? `Referred by: ${name}` : "Enter referral code (optional)"}
+                className={`${inputClass} disabled:opacity-50 disabled:cursor-not-allowed`}
+              />
+              {referralLocked && name && (
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-yellow-400 font-semibold bg-yellow-400/10 px-2 py-0.5 rounded-full">
+                  {name}
+                </span>
+              )}
+            </InputField>
+
+            {/* Placement Side */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Placement Side <span className="text-yellow-400">*</span>
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {["left", "right"].map((val) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setSide(val)}
+                    className={`flex items-center justify-center gap-2 py-3 rounded-xl border text-sm font-semibold transition-all ${
+                      side === val
+                        ? "bg-gradient-to-r from-yellow-500 to-amber-500 border-transparent text-slate-950 shadow-lg shadow-yellow-500/20"
+                        : "bg-slate-900/60 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-300"
+                    }`}
+                  >
+                    <GitBranch size={14} />
+                    {val.charAt(0).toUpperCase() + val.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent bg-gray-50 text-gray-900 transition-all"
-              style={{ focusRingColor: colors.theme1 }}
-            />
-          </div>
-          {fieldErrors.email && (
-            <p className="text-sm text-red-500 mt-2 flex items-center">
-              <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
-              {fieldErrors.email}
-            </p>
-          )}
-        </div>
 
-        {/* Password Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Password <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Lock size={18} className="text-gray-400" />
+            {/* Username */}
+            <InputField label="Username" required>
+              <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                placeholder="Enter your username"
+                className={inputClass}
+              />
+            </InputField>
+
+            {/* Phone */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Phone Number <span className="text-yellow-400">*</span>
+              </label>
+              <div className="flex gap-2">
+                <div className="relative w-28 flex-shrink-0">
+                  <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
+                  <select
+                    value={selectedCountry.code}
+                    onChange={(e) => setSelectedCountry(countryCodes.find(c => c.code === e.target.value))}
+                    className="w-full pl-8 pr-2 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-white text-xs focus:outline-none focus:border-yellow-500/60 transition-all appearance-none cursor-pointer"
+                  >
+                    {countryCodes.map((c) => (
+                      <option key={c.code} value={c.code} className="bg-slate-900">
+                        {c.flag} {c.code}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Phone number"
+                  className="flex-1 px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:border-yellow-500/60 transition-all"
+                />
+              </div>
             </div>
-            <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Create a password"
-              className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent bg-gray-50 text-gray-900 transition-all"
-              style={{ focusRingColor: colors.theme1 }}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition p-1"
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-        </div>
 
-        {/* Confirm Password Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Confirm Password <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Lock size={18} className="text-gray-400" />
+            {/* Email */}
+            <InputField label="Email" required error={fieldErrors.email}>
+              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+                className={inputClass}
+              />
+            </InputField>
+
+            {/* Password row - side by side on larger screens */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <InputField label="Password" required error={fieldErrors.password}>
+                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Create password"
+                  className={`${inputClass} pr-10`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </InputField>
+
+              <InputField label="Confirm Password" required>
+                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  placeholder="Confirm password"
+                  className={`${inputClass} pr-10`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                >
+                  {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </InputField>
             </div>
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              placeholder="Confirm your password"
-              className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent bg-gray-50 text-gray-900 transition-all"
-              style={{ focusRingColor: colors.theme1 }}
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition p-1"
-            >
-              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-          {fieldErrors.password && (
-            <p className="text-sm text-red-500 mt-2 flex items-center">
-              <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
-              {fieldErrors.password}
+
+            {/* General error */}
+            {(fieldErrors.allrequired || fieldErrors.general) && (
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3">
+                <p className="text-red-400 text-xs flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-red-400 rounded-full flex-shrink-0" />
+                  {fieldErrors.allrequired || fieldErrors.general}
+                </p>
+              </div>
+            )}
+
+            {/* Submit */}
+            <div className="pt-1">
+              <Button
+                disabled={loading}
+                loading={loading}
+                title={loading ? "Creating Account..." : "Create Account"}
+                type="submit"
+              />
+            </div>
+
+            {/* Trust badges */}
+         
+
+            {/* Login link */}
+            <p className="text-center text-sm text-slate-400 pb-2">
+              Already have an account?{" "}
+              <NavLink to="/login" className="text-yellow-400 font-semibold hover:text-yellow-300 transition-colors">
+                Login
+              </NavLink>
             </p>
-          )}
+          </form>
         </div>
 
-        {fieldErrors.allrequired && (
-          <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-            <p className="text-red-600 text-sm">
-              <span className="w-2 h-2 bg-red-500 rounded-full inline-block mr-2"></span>
-              {fieldErrors.allrequired}
-            </p>
-          </div>
-        )}
-
-
-
-        <Button
-          disabled={loading}
-          title={loading ? "Creating Account..." : "Create Account"}
-          type="submit"
-        />
-
-        <p className="text-center text-sm text-gray-600 mt-4">
-          Already have an account?{" "}
-          <NavLink
-            to="/login"
-            className="font-medium transition-colors"
-            style={{ color: colors.theme1 }}
-          >
-            Login
-          </NavLink>
+        {/* Bottom note */}
+        <p className="text-center text-xs text-slate-600 mt-4">
+          © 2025 NFT RealEstate Corp. · www.nftrealestate.us
         </p>
-      </form>
-    </AuthWrapper>
+      </div>
+    </div>
   );
 };
 

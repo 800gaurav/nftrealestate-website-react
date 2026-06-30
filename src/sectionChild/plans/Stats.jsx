@@ -152,7 +152,7 @@ const Stats = () => {
         {/* Footer Info */}
         <div className="text-center text-slate-500 text-sm border-t border-slate-800 pt-8">
           <p className="font-semibold text-slate-400 mb-1">NFT REALESTATE CORP.</p>
-          <p>www.nftrealestate.us · support@nftrealestate.us</p>
+          <p>www.nftrealestate.us · supportnftrealestate@gmail.com</p>
           <p>1250 Broadway, NY 10001 · © 2025 All Rights Reserved · Est. 2013</p>
         </div>
 

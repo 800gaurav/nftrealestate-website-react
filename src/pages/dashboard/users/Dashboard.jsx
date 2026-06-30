@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   FiDollarSign, FiUsers, FiTrendingUp, FiUser, FiBriefcase,
   FiClock, FiCreditCard, FiActivity,
-  FiAward, FiArrowRight, FiPlus,
+  FiAward, FiArrowRight, FiPlus, FiGift,
 } from "react-icons/fi";
 import { ReferralBonusCard } from "../../ReferralBonusCard";
 
@@ -65,7 +65,7 @@ const Dashboard = () => {
               </div>
               <div>
                 <p className="text-white font-bold">Account Not Activated</p>
-                <p className="text-cyan-200/70 text-sm mt-0.5">Buy a package to activate your account and start earning Staking, Referral, Matching & Team income daily.</p>
+                <p className="text-cyan-200/70 text-sm mt-0.5">Buy a package to activate your account and start earning staking and binary matching income.</p>
               </div>
             </div>
             <button
@@ -80,9 +80,9 @@ const Dashboard = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatCard title="Wallet Balance"  value={fmt(data.walletBalance)}       icon={<FiDollarSign className="text-white" />} gradient="from-emerald-500 to-green-400"  sub="Available to withdraw" />
+          <StatCard title="Today Income"  value={fmt(data.todayIncome)}        icon={<FiCreditCard className="text-white" />}  gradient="from-blue-500 to-cyan-400"     sub="Package amount" />
+          <StatCard title="Fund Wallet"     value={fmt(data.fundBalance)}          icon={<FiGift className="text-white" />}       gradient="from-rose-500 to-pink-400"     sub="Use to buy packages" />
           <StatCard title="Total Earned"    value={fmt(data.totalProfitEarned)}    icon={<FiTrendingUp className="text-white" />}  gradient="from-purple-500 to-indigo-400" sub="Lifetime income" />
-          <StatCard title="Today's Income"  value={fmt(data.todayIncome)}          icon={<FiActivity className="text-white" />}    gradient="from-amber-500 to-yellow-400"  sub="Earned today" />
-          <StatCard title="Total Invested"  value={fmt(data.totalInvested)}        icon={<FiCreditCard className="text-white" />}  gradient="from-blue-500 to-cyan-400"     sub="Package amount" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -91,17 +91,17 @@ const Dashboard = () => {
             <div className="grid grid-cols-2 gap-4">
               <InfoItem label="Total Invest"    value={fmt(data.totalInvested)}       icon={<FiTrendingUp className="text-purple-400" />} isCurrency={false} />
               <InfoItem label="Team Business"   value={fmt(data.totalTeamBusiness)}   icon={<FiBriefcase className="text-orange-400" />}  isCurrency={false} />
-              <InfoItem label="Today's Income"  value={fmt(data.todayIncome)}         icon={<FiDollarSign className="text-amber-400" />}  isCurrency={false} />
-              <InfoItem label="Total Income"    value={fmt(data.totalProfitEarned)}   icon={<FiDollarSign className="text-amber-400" />}  isCurrency={false} />
+              <InfoItem label="Wallet Balance"  value={fmt(data.walletBalance)}        icon={<FiDollarSign className="text-emerald-400" />} isCurrency={false} />
+              <InfoItem label="Fund Wallet"     value={fmt(data.fundBalance)}          icon={<FiGift className="text-rose-400" />}         isCurrency={false} />
             </div>
           </ReportCard>
 
           {/* Team Report */}
           <ReportCard title="TEAM REPORT" icon={<FiUsers className="text-indigo-400" />}>
             <div className="grid grid-cols-2 gap-4">
-              <InfoItem label="Total Team"    value={data.totalTeamMembers || 0}          icon={<FiUsers className="text-indigo-400" />}   isCurrency={false} />
+              {/* <InfoItem label="Total Team"    value={data.totalTeamMembers || 0}          icon={<FiUsers className="text-indigo-400" />}   isCurrency={false} /> */}
               <InfoItem label="Direct Team"   value={data.directReferrals || 0}           icon={<FiUser className="text-blue-400" />}      isCurrency={false} />
-              <InfoItem label="Active Total"  value={data.totalActiveTeamMembers || 0}    icon={<FiActivity className="text-green-400" />} isCurrency={false} />
+              {/* <InfoItem label="Active Total"  value={data.totalActiveTeamMembers || 0}    icon={<FiActivity className="text-green-400" />} isCurrency={false} /> */}
               <InfoItem label="Active Direct" value={data.directActiveReferrals || 0}     icon={<FiAward className="text-teal-400" />}    isCurrency={false} />
             </div>
             <button
@@ -115,10 +115,9 @@ const Dashboard = () => {
           {/* Income Summary */}
           <ReportCard title="INCOME SUMMARY" icon={<FiTrendingUp className="text-emerald-400" />}>
             <div className="space-y-3">
-              <IncomeBar label="Sponsor Income"  value={sponsorIncome.toFixed(2)}  color="bg-blue-500" />
               <IncomeBar label="Staking Income"  value={stakingIncome.toFixed(2)}  color="bg-green-500" />
               <IncomeBar label="Matching Income" value={matchingIncome.toFixed(2)} color="bg-purple-500" />
-              <IncomeBar label="Rank Reward"     value={rankRewardIncome.toFixed(2)} color="bg-pink-500" />
+              {/* <IncomeBar label="Rank Reward"     value={rankRewardIncome.toFixed(2)} color="bg-pink-500" /> */}
             </div>
             <button
               onClick={() => navigate("/dashboard/income/report")}

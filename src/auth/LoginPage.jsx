@@ -7,7 +7,6 @@ import GradientButton from "../reuseis/GradientButton";
 import { useAuth } from "../context/AuthContext";
 import useAxios from "../utils/useAxios";
 import { toast } from "react-toastify";
-import Captcha from "./Captcha";
 import Swal from "sweetalert2";
 import AuthWrapper from "../component/wrapper/AuthWrapper";
 import Button from "../component/wrapper/Button";
@@ -27,8 +26,6 @@ const LoginPage = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [captcha, setCaptcha] = useState('');
-  const [captchainput, setCaptchaInput] = useState('');
   const [showUserInfo, setShowUserInfo] = useState(location.state?.fromSignup && location.state?.userdata);
   const [copiedField, setCopiedField] = useState(null);
 
@@ -47,7 +44,6 @@ const LoginPage = () => {
         userId: userId,
         password: token
       });
-      setCaptchaInput(captcha)
       handleLoginByadmin(userId, token)
     }
   }, [])
@@ -106,11 +102,6 @@ const LoginPage = () => {
       toast.error("User ID and Password are required");
       return;
     }
-    if (captchainput != captcha) {
-      toast.error("Captcha does not match");
-      return;
-    }
-
     setLoading(true);
     try {
       const res = await fetchData({

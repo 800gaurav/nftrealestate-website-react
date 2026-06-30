@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -46,9 +46,9 @@ const NftRealEstateLanding = () => {
     { rank: "Bronze", business: "$1,000", reward: "Welcome Kit", color: "from-amber-700 to-amber-900", icon: Award },
     { rank: "Silver", business: "$5,000", reward: "Android Mobile", color: "from-slate-400 to-slate-600", icon: Laptop },
     { rank: "Gold", business: "$20,000", reward: "Bangkok Tour", color: "from-yellow-500 to-amber-600", icon: Globe },
-    { rank: "Diamond", business: "$50,000", reward: "Car Down Payment", color: "from-cyan-400 to-blue-500", icon: Shield },
-    { rank: "Crown", business: "$100,000", reward: "Fortuner Car", color: "from-red-500 to-rose-600", icon: Award },
-    { rank: "Ambassador", business: "$5,000,000", reward: "2% Royalty Income", color: "from-purple-500 to-indigo-600", icon: Rocket }
+    { rank: "Diamond", business: "$50,000", reward: "Thailand 3N/4 Day + Car + Foreign D/P", color: "from-cyan-400 to-blue-500", icon: Shield },
+    { rank: "Crown", business: "$100,000", reward: "Fortuner", color: "from-red-500 to-rose-600", icon: Award },
+    { rank: "Ambassador", business: "$500,000", reward: "2% Royalty T/C", color: "from-purple-500 to-indigo-600", icon: Rocket }
   ];
 
   // Timeline for Slide 3
@@ -75,7 +75,7 @@ const NftRealEstateLanding = () => {
   };
 
   return (
-    <div className="bg-[#070b13] text-gray-100 font-sans min-h-screen relative overflow-hidden">
+    <div className="text-gray-100 font-sans min-h-screen relative overflow-hidden">
       
       {/* Background Neural Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))] pointer-events-none z-0"></div>
@@ -91,15 +91,7 @@ const NftRealEstateLanding = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-[#070b13] via-[#070b13]/80 to-transparent"></div>
         </div>
 
-        {/* Top Header Tag */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex justify-between items-center mt-6">
-          <div className="flex items-center gap-3">
-            <img src="/Images/logo1.png" alt="NFT RealEstate Logo" className="h-14 w-auto object-contain brightness-100" />
-          </div>
-          <div className="border border-yellow-500/30 bg-slate-950/60 backdrop-blur-md px-4 py-1.5 rounded-lg text-xs font-semibold tracking-wider text-yellow-400">
-            EST. 2013
-          </div>
-        </div>
+      
 
         {/* Hero Body Content */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex-grow flex flex-col justify-center items-center my-12">
@@ -214,7 +206,7 @@ const NftRealEstateLanding = () => {
                 </div>
 
                 {/* Simulated Image */}
-                <div className="relative rounded-2xl overflow-hidden h-60 bg-[url('https://images.unsplash.com/photo-1542362567-b07eac790acd?q=80&w=800')] bg-cover bg-center mb-6 border border-gray-800">
+                {/* <div className="relative rounded-2xl overflow-hidden h-60 bg-[url('https://images.unsplash.com/photo-1542362567-b07eac790acd?q=80&w=800')] bg-cover bg-center mb-6 border border-gray-800">
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
                     <span className="text-xs bg-slate-900/90 text-yellow-400 border border-yellow-500/20 px-2 py-1 rounded">
@@ -222,7 +214,7 @@ const NftRealEstateLanding = () => {
                     </span>
                     <span className="text-lg font-bold text-white">$250,000,000 USD</span>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
                   <div className="bg-slate-950/80 p-3.5 rounded-xl border border-gray-850">
@@ -347,7 +339,7 @@ const NftRealEstateLanding = () => {
       {/* ========================================================================
           SLIDE 4: LEADERSHIP & ADVISORY BOARD
           ======================================================================== */}
-      <section id="leadership" className="py-24 relative z-10">
+      {/* <section id="leadership" className="py-24 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-16 text-center">
             <h2 className="text-4xl font-bold text-white mb-2">Leadership & Advisory Board</h2>
@@ -355,41 +347,40 @@ const NftRealEstateLanding = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Michael Anderson */}
+         
             <div className="bg-slate-950/60 border border-gray-800 hover:border-yellow-500/20 p-8 rounded-2xl text-center backdrop-blur-md group transition-all duration-300">
               <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 border-4 border-yellow-500/25 group-hover:border-yellow-500/50 transition-colors bg-[url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300')] bg-cover bg-center">
               </div>
               <h3 className="text-xl font-bold text-white mb-1">Michael Anderson</h3>
-              <p className="text-xs text-yellow-400 font-bold uppercase tracking-wider mb-4">Chairman – Global Strategy</p>
+              <p className="text-xs text-yellow-400 font-bold uppercase tracking-wider mb-4">Chairman â€“ Global Strategy</p>
               <p className="text-sm text-gray-400 leading-relaxed">
                 Leads strategic planning, innovation initiatives, global partnerships, and long-term organizational growth.
               </p>
             </div>
 
-            {/* Rahul Sharma */}
+   
             <div className="bg-slate-950/60 border border-gray-800 hover:border-yellow-500/20 p-8 rounded-2xl text-center backdrop-blur-md group transition-all duration-300">
               <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 border-4 border-yellow-500/25 group-hover:border-yellow-500/50 transition-colors bg-[url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300')] bg-cover bg-center">
               </div>
               <h3 className="text-xl font-bold text-white mb-1">Rahul Sharma</h3>
-              <p className="text-xs text-yellow-400 font-bold uppercase tracking-wider mb-4">Director – Global Operations</p>
+              <p className="text-xs text-yellow-400 font-bold uppercase tracking-wider mb-4">Director â€“ Global Operations</p>
               <p className="text-sm text-gray-400 leading-relaxed">
                 Responsible for operations management, stakeholder engagement, strategic partnerships, and international expansion.
               </p>
             </div>
 
-            {/* Fahed Ahmed Saeed AlAwadhi */}
             <div className="bg-slate-950/60 border border-gray-800 hover:border-yellow-500/20 p-8 rounded-2xl text-center backdrop-blur-md group transition-all duration-300">
               <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 border-4 border-yellow-500/25 group-hover:border-yellow-500/50 transition-colors bg-[url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=300')] bg-cover bg-center">
               </div>
               <h3 className="text-xl font-bold text-white mb-1">Fahed Ahmed Saeed AlAwadhi</h3>
-              <p className="text-xs text-yellow-400 font-bold uppercase tracking-wider mb-4">Director – Infrastructure</p>
+              <p className="text-xs text-yellow-400 font-bold uppercase tracking-wider mb-4">Director â€“ Infrastructure</p>
               <p className="text-sm text-gray-400 leading-relaxed">
                 15+ years of infrastructure development experience. MBA (Hons.) Strategic Management, B.Sc Civil Engineering.
               </p>
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ========================================================================
           SLIDE 5: GLOBAL PRESENCE
@@ -659,25 +650,25 @@ const NftRealEstateLanding = () => {
                 {/* Layer 1 */}
                 <div className="bg-slate-900/60 p-4 rounded-xl border border-gray-800">
                   <div className="text-blue-400 font-bold uppercase mb-1">Blockchain Layer</div>
-                  <div className="text-gray-400">Distributed Ledger • Decentralized Nodes • Consensus • P2P</div>
+                  <div className="text-gray-400">Distributed Ledger â€¢ Decentralized Nodes â€¢ Consensus â€¢ P2P</div>
                 </div>
 
                 {/* Layer 2 */}
                 <div className="bg-slate-900/65 p-4 rounded-xl border border-gray-800">
                   <div className="text-teal-400 font-bold uppercase mb-1">Smart Contracts Layer</div>
-                  <div className="text-gray-400">Automation • Business Logic • Yield Execs • Audited Code</div>
+                  <div className="text-gray-400">Automation â€¢ Business Logic â€¢ Yield Execs â€¢ Audited Code</div>
                 </div>
 
                 {/* Layer 3 */}
                 <div className="bg-slate-900/65 p-4 rounded-xl border border-gray-800">
                   <div className="text-red-400 font-bold uppercase mb-1">Security Layer</div>
-                  <div className="text-gray-400">Identity Management • E2E Encryption • Access Controls • KYC/AML</div>
+                  <div className="text-gray-400">Identity Management â€¢ E2E Encryption â€¢ Access Controls â€¢ KYC/AML</div>
                 </div>
 
                 {/* Layer 4 */}
                 <div className="bg-slate-900/65 p-4 rounded-xl border border-gray-800">
                   <div className="text-purple-400 font-bold uppercase mb-1">Global Access Layer</div>
-                  <div className="text-gray-400">Web Portal • Mobile Apps • API Gateways • IoT Integrations</div>
+                  <div className="text-gray-400">Web Portal â€¢ Mobile Apps â€¢ API Gateways â€¢ IoT Integrations</div>
                 </div>
               </div>
             </div>
@@ -715,7 +706,7 @@ const NftRealEstateLanding = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-16 text-center">
             <h2 className="text-4xl font-bold text-white mb-2">Investment Packages</h2>
-            <p className="text-xs tracking-widest text-yellow-400 uppercase font-semibold">Start your journey — minimum investment $12</p>
+            <p className="text-xs tracking-widest text-yellow-400 uppercase font-semibold">Start your journey â€” minimum investment $12</p>
             <div className="h-1 w-20 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full mt-3"></div>
           </div>
 
@@ -731,8 +722,8 @@ const NftRealEstateLanding = () => {
                   <span className="text-xs text-gray-400"> USD</span>
                 </div>
                 <ul className="space-y-3.5 text-xs text-gray-300 pt-6 border-t border-gray-900">
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> Staking Income (0.5%-1% daily)</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> 10% Referral Income</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> Staking Income (0.5% 1% daily)</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> No signup bonus</li>
                   <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> Team Growth Bonus 1%</li>
                   <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> Basic Dashboard Access</li>
                 </ul>
@@ -818,7 +809,7 @@ const NftRealEstateLanding = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-16 text-center">
             <h2 className="text-4xl font-bold text-white mb-2">Income Plan</h2>
-            <p className="text-xs tracking-widest text-yellow-400 uppercase font-semibold">4 powerful earning streams — working 24/7 for you</p>
+            <p className="text-xs tracking-widest text-yellow-400 uppercase font-semibold">4 powerful earning streams â€” working 24/7 for you</p>
             <div className="h-1 w-20 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full mt-3"></div>
           </div>
 
@@ -832,7 +823,7 @@ const NftRealEstateLanding = () => {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-lg font-bold text-white">Staking Income</h3>
-                  <span className="text-xs font-bold bg-teal-500/15 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">0.5%–1% Daily</span>
+                  <span className="text-xs font-bold bg-teal-500/15 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">0.5% 1% Daily</span>
                 </div>
                 <p className="text-xs text-gray-400 leading-relaxed">
                   40% of joining amount is auto-staked. Earn daily returns of 0.5% to 1% directly in your staking wallet, compounding automatically for exponential growth.
@@ -847,11 +838,11 @@ const NftRealEstateLanding = () => {
               </div>
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-bold text-white">Sponsor / Referral</h3>
+                  <h3 className="text-lg font-bold text-white">Rank / Reward</h3>
                   <span className="text-xs font-bold bg-blue-500/15 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">10% Direct</span>
                 </div>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Earn 10% instant direct commission on every new member you introduce to the platform. No referral caps or limits—enjoy infinite earning possibilities.
+                  Earn 10% instant direct commission on every new member you introduce to the platform. No referral caps or limitsâ€”enjoy infinite earning possibilities.
                 </p>
               </div>
             </div>
@@ -864,7 +855,7 @@ const NftRealEstateLanding = () => {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-lg font-bold text-white">Team Growth Bonus</h3>
-                  <span className="text-xs font-bold bg-yellow-500/15 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">1%–3% Team</span>
+                  <span className="text-xs font-bold bg-yellow-500/15 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">1%â€“3% Team</span>
                 </div>
                 <p className="text-xs text-gray-400 leading-relaxed">
                   Earn 1% to 3% bonus on your entire team's total cumulative business volume. Requires a minimum of 10 direct referrals and a $100 package level to unlock the full 3% margin.
@@ -883,7 +874,7 @@ const NftRealEstateLanding = () => {
                   <span className="text-xs font-bold bg-orange-500/15 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded">10% Matching</span>
                 </div>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Earn 10% matching income on your team's binary pairs. Calculations start at a 2:1/1:2 binary ratio, then convert to a standard 1:1 ratio. Daily capping limits apply.
+                  Earn 10% matching income on your team's binary pairs. Calculations start at a 2:1/1:2 binary ratio, then convert to a standard 1:1 ratio. Only binary pair matching cap applies.
                 </p>
               </div>
             </div>
@@ -899,7 +890,7 @@ const NftRealEstateLanding = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-16 text-center">
             <h2 className="text-4xl font-bold text-white mb-2">Rank & Rewards</h2>
-            <p className="text-xs tracking-widest text-yellow-400 uppercase font-semibold">Rise through the ranks — earn lifestyle-changing rewards</p>
+            <p className="text-xs tracking-widest text-yellow-400 uppercase font-semibold">Rise through the ranks â€” earn lifestyle-changing rewards</p>
             <div className="h-1 w-20 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full mt-3"></div>
           </div>
 
@@ -924,59 +915,7 @@ const NftRealEstateLanding = () => {
         </div>
       </section>
 
-      {/* ========================================================================
-          SLIDE 13: WITHDRAWAL SYSTEM
-          ======================================================================== */}
-      <section id="withdrawals" className="py-24 bg-slate-950/40 relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center mb-16 text-center">
-            <h2 className="text-4xl font-bold text-white mb-2">Withdrawal System</h2>
-            <p className="text-xs tracking-widest text-yellow-400 uppercase font-semibold">Secure & Transparent Financial Operations</p>
-            <div className="h-1 w-20 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full mt-3"></div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            
-            {/* Minimum withdrawal */}
-            <div className="bg-slate-950/60 border border-gray-800 p-8 rounded-2xl flex flex-col justify-between items-center text-center backdrop-blur-md">
-              <div className="bg-yellow-50/10 p-3.5 rounded-2xl border border-yellow-500/20 text-yellow-400 mb-6">
-                <DollarSign className="h-8 w-8" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Minimum Withdrawal</h3>
-              <p className="text-4xl font-extrabold text-yellow-400 mb-4">$5</p>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Accessible entry point for all stakeholders, ensuring high capital liquidity and flexibility in asset management.
-              </p>
-            </div>
-
-            {/* Admin Charges */}
-            <div className="bg-slate-950/60 border border-gray-800 p-8 rounded-2xl flex flex-col justify-between items-center text-center backdrop-blur-md">
-              <div className="bg-yellow-50/10 p-3.5 rounded-2xl border border-yellow-500/20 text-yellow-400 mb-6">
-                <Shield className="h-8 w-8" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Admin Charges</h3>
-              <p className="text-4xl font-extrabold text-yellow-400 mb-4">10%</p>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Standard processing fee utilized for ecosystem maintenance, security audit renewals, and operational support.
-              </p>
-            </div>
-
-          </div>
-
-          {/* Bottom features bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto mt-12 text-center text-xs font-bold text-gray-400">
-            <div className="bg-slate-950/60 border border-gray-850 p-4 rounded-xl flex items-center justify-center gap-2">
-              <Zap className="h-4 w-4 text-yellow-400" /> Instant Processing Available
-            </div>
-            <div className="bg-slate-950/60 border border-gray-850 p-4 rounded-xl flex items-center justify-center gap-2">
-              <Lock className="h-4 w-4 text-yellow-400" /> Multi-Layer Security Protocols
-            </div>
-            <div className="bg-slate-950/60 border border-gray-850 p-4 rounded-xl flex items-center justify-center gap-2">
-              <Globe className="h-4 w-4 text-yellow-400" /> Global Payout Support
-            </div>
-          </div>
-        </div>
-      </section>
+   
 
       {/* ========================================================================
           SLIDE 14: HOW TO GET STARTED
@@ -1059,7 +998,7 @@ const NftRealEstateLanding = () => {
       <footer className="py-16 bg-slate-950 border-t border-gray-900 relative z-10 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <img src="/Images/logo1.png" alt="NFT RealEstate Logo" className="h-16 w-auto mx-auto mb-4 object-contain" />
+          <img src="/Images/logo1.png" alt="NFT RealEstate Logo" className="h-28 w-auto mx-auto mb-4 object-contain" />
           
           <h2 className="text-xl font-bold text-white mb-2">NFT RealEstate Corp.</h2>
           <p className="text-xs text-yellow-400 tracking-wider uppercase font-semibold mb-10">The Future of Property Ownership is Here</p>
@@ -1073,8 +1012,8 @@ const NftRealEstateLanding = () => {
             </div>
             <div className="flex flex-col items-center gap-2">
               <Mail className="h-5 w-5 text-yellow-400" />
-              <a href="mailto:support@nftrealestate.us" className="hover:text-white transition-colors">
-                support@nftrealestate.us
+              <a href="mailto:supportnftrealestate@gmail.com" className="hover:text-white transition-colors">
+                supportnftrealestate@gmail.com
               </a>
             </div>
             <div className="flex flex-col items-center gap-2">
@@ -1084,7 +1023,7 @@ const NftRealEstateLanding = () => {
           </div>
 
           <div className="border-t border-gray-900 pt-8 text-[11px] text-gray-500">
-            © 2025 NFT REALESTATE CORP. | ALL RIGHTS RESERVED | EST. 2013
+            Â© 2025 NFT REALESTATE CORP. | ALL RIGHTS RESERVED | EST. 2013
           </div>
         </div>
       </footer>
@@ -1094,3 +1033,6 @@ const NftRealEstateLanding = () => {
 };
 
 export default NftRealEstateLanding;
+
+
+

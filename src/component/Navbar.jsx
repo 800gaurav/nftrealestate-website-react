@@ -24,7 +24,7 @@ const Navbar = () => {
     { name: "Packages", path: "/#packages" },
     { name: "Income Plan", path: "/#incomes" },
     { name: "Rewards", path: "/#rewards" },
-    { name: "Terms & Conditions", path: "/termsConditions" }
+    // { name: "Terms & Conditions", path: "/termsConditions" }
   ];
 
   const handleNavClick = (e, path) => {
@@ -53,12 +53,12 @@ const Navbar = () => {
             <img
               src="/Images/logo1.png"
               alt="NFT RealEstate Logo"
-              className="h-16 w-auto object-contain mt-1"
+              className="h-50 w-auto object-contain"
             />
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6 font-semibold text-xs tracking-wider">
+          <div className="hidden lg:flex items-center gap-6 font-semibold text-sm tracking-wide">
             {navItems.map(({ name, path }) => (
               <NavLink
                 key={name}
@@ -83,14 +83,14 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             <NavLink
               to="/login"
-              className="text-sm font-semibold text-gray-300 hover:text-white transition duration-200"
+              className="text-base font-semibold text-gray-300 hover:text-white transition duration-200"
             >
               Login
             </NavLink>
 
             <NavLink
               to="/signup"
-              className="relative bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs hover:from-yellow-600 hover:to-amber-700 hover:scale-105 transition-all duration-300 shadow-md shadow-yellow-500/5 hover:shadow-yellow-500/15"
+              className="relative bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm hover:from-yellow-600 hover:to-amber-700 hover:scale-105 transition-all duration-300 shadow-md shadow-yellow-500/5 hover:shadow-yellow-500/15"
             >
               Register
             </NavLink>

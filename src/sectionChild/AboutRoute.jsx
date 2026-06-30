@@ -15,7 +15,7 @@ const navigate  = useNavigate()
       {/* Main Content */}
       <div className="content-container">
         <header className={`fade-in ${isVisible ? 'visible' : ''}`}>
-          <h1>Jupiter</h1>
+          <h1>NFT RealEstate</h1>
           <p className="tagline">Bridging Traditional Finance and Digital Assets</p>
         </header>
 
@@ -27,7 +27,7 @@ const navigate  = useNavigate()
           </div>
           <div className="profile-intro">
             <p className="profile-description">
-              At Jupiter, our commitment to innovation, transparency, and member success shines 
+              At NFT RealEstate, our commitment to innovation, transparency, and member success shines 
               through every aspect of our ecosystem.
             </p>
           </div>
@@ -54,7 +54,7 @@ const navigate  = useNavigate()
                 <Coins  className="icon" />
               </div>
               <h3>Token Name</h3>
-              <p>Jupiter (JUP)</p>
+              <p>NFT RealEstate (NFTRE)</p>
             </div>
             
             <div className="profile-card">
@@ -157,6 +157,7 @@ const navigate  = useNavigate()
           font-family: 'Arial', sans-serif;
           overflow-x: hidden;
           padding: 2rem 0;
+          background: transparent;
         }
 
        

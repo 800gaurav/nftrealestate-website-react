@@ -7,7 +7,6 @@ import DashboardLayout from "../pages/dashboard/DashboardLayout";
 import Dashboard from "../pages/dashboard/users/Dashboard";
 import ActivateAccount from "../activation/ActivateAccount";
 import DepositPage from "../Deposite/DepositPage";
-import DepositReportPage from "../Deposite/DepositReportPage";
 import WithdrawPage from "../Deposite/WithdrawPage";
 import WithdrawHistoryPage from "../Deposite/WithdrawHistoryPage";
 import DirectTeamPage from "../Team/DirectTeamPage";
@@ -27,6 +26,7 @@ import PublicRoute from "./PublicRoute";
 import PrivacyPolicy from "../sectionChild/PrivacyPolicy";
 import DeleteAccount from "../sectionChild/DeleteAccount";
 import IncomeReportPage from "../Income/IncomeReportPage";
+import RankRewardPage from "../Income/RankRewardPage";
 import ServicesPage from "../sectionChild/ServicesPage";
 import DashboardServicesPage from "../pages/dashboard/DashboardServicesPage";
 
@@ -58,10 +58,10 @@ export const router = createBrowserRouter([
       { index: true,                              element: <Dashboard /> },
       { path: "home",                             element: <Dashboard /> },
       { path: "funds/deposit",                    element: <DepositPage /> },
-      { path: "funds/deposit-report",             element: <DepositReportPage /> },
       { path: "funds/withdraw",                   element: <WithdrawPage /> },
       { path: "funds/withdraw-history",           element: <WithdrawHistoryPage /> },
       { path: "income/report",                    element: <IncomeReportPage /> },
+      { path: "income/rank-reward",               element: <RankRewardPage /> },
       { path: "teams/direct-team",                element: <DirectTeamPage /> },
       { path: "teams/tree",                       element: <BinaryTreePage /> },
       { path: "profile/update-profile",           element: <UpdateProfile /> },

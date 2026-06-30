@@ -89,7 +89,7 @@ const VerifyOtpPage = () => {
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
             placeholder="Enter OTP"
-            className="w-full text-center text-xl tracking-widest px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 mb-6"
+            className="w-full text-center text-xl text-white tracking-widest px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 mb-6"
         />
 
         <Button
