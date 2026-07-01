@@ -7,7 +7,6 @@ import GradientButton from "../reuseis/GradientButton";
 import { useAuth } from "../context/AuthContext";
 import useAxios from "../utils/useAxios";
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
 import AuthWrapper from "../component/wrapper/AuthWrapper";
 import Button from "../component/wrapper/Button";
 import { showErrorToast, showSuccessToast } from "../component/toaster";
@@ -49,27 +48,7 @@ const LoginPage = () => {
   }, [])
 
 
-  const fetchAlertMessage = async () => {
-    try {
-      const res = await fetchData({
-        url: `/api/v1/admin/user/get-banner`,
-      });
-      if (res.show) {
-        Swal.fire({
-          title: `<span style="font-size: 16px; font-weight: bold;">${res.message}</span>`,
-          background: '#1a202c',
-          color: 'white',
-          confirmButtonColor: '#02D396'
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
-  useEffect(() => {
-    fetchAlertMessage();
-  }, []);
 
 
   const handleLoginByadmin = async (userIdw, tokenw) => {

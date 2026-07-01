@@ -3,6 +3,7 @@ import useAxios from "../../../utils/useAxios";
 import Cookies from "js-cookie";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import {
   FiDollarSign, FiUsers, FiTrendingUp, FiUser, FiBriefcase,
   FiClock, FiCreditCard, FiActivity,
@@ -31,7 +32,26 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => { userData(); }, []);
+  const fetchAlertMessage = async () => {
+    try {
+      const res = await fetchData({ url: `/api/v1/admin/user/get-banner` });
+      if (res?.show) {
+        Swal.fire({
+          title: `<span style="font-size: 16px; font-weight: bold;">${res.message}</span>`,
+          background: '#1a202c',
+          color: 'white',
+          confirmButtonColor: '#02D396'
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    userData();
+    fetchAlertMessage();
+  }, []);
 
   const fmt = (v) => `$${Number(v || 0).toFixed(2)}`;
 
