@@ -65,12 +65,21 @@ const UpdateProfile = () => {
       return;
     }
 
+    const payload = {
+      name,
+      email,
+      phone,
+      txnpass,
+      withdrawTRC_ADDRESS: withdrawTRC_ADDRESS === "0" ? "" : withdrawTRC_ADDRESS,
+      withdrawBEP_ADDRESS: withdrawBEP_ADDRESS === "0" ? "" : withdrawBEP_ADDRESS,
+    };
+
     try {
       setLoading(true);
       const res = await fetchData({ 
         url: '/api/v1/user/auth/update-profile', 
         method: "POST", 
-        data: profile 
+        data: payload
       });
       
       if (res) {

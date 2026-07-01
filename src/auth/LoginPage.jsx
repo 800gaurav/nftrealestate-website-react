@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import { NavLink } from "react-router-dom";
-import { Eye, EyeOff, X, User, Lock, Shield, Copy, ArrowLeft, Check } from "lucide-react";
-import GradientButton from "../reuseis/GradientButton";
+import { useNavigate, useSearchParams, NavLink } from "react-router-dom";
+import { Eye, EyeOff, User, Lock } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import useAxios from "../utils/useAxios";
 import { toast } from "react-toastify";
@@ -14,16 +11,10 @@ import { showErrorToast, showSuccessToast } from "../component/toaster";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const location = useLocation();
-
-  const user = location.state?.userdata;
-
   const { fetchData } = useAxios();
   const [formData, setFormData] = useState({ userId: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showUserInfo, setShowUserInfo] = useState(location.state?.fromSignup && location.state?.userdata);
-  const [copiedField, setCopiedField] = useState(null);
 
   const [searchParams] = useSearchParams();
   const userId = searchParams?.get("userId");
@@ -35,8 +26,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (userId && token) {
-      const decodedToken = decodeURIComponent(token);
-      handleLoginByadmin(userId, decodedToken);
+      handleLoginByadmin(userId, token);
     }
   }, []);
 
@@ -89,30 +79,41 @@ const LoginPage = () => {
     }
   };
 
-  const copyToClipboard = (text, fieldName) => {
-    navigator.clipboard.writeText(text);
-    setCopiedField(fieldName);
-    setTimeout(() => setCopiedField(null), 2000);
-  };
-
-  const closeUserInfoPopup = () => {
-    setShowUserInfo(false);
-    window.history.replaceState({}, document.title);
-  };
-
   return (
-    <>
-      {showUserInfo && user && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-          onClick={closeUserInfoPopup}
-        >
-        </motion.div>
-      )}
-    </>
+    <AuthWrapper title="Welcome Back" subtitle="Sign in to your account">
+      <form className="space-y-5" onSubmit={handleLogin}>
+        <div className="relative">
+          <User className="absolute left-3 top-3.5 text-gray-400" size={18} />
+          <input
+            type="text"
+            name="userId"
+            value={formData.userId}
+            onChange={handleChange}
+            placeholder="User ID"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
+          />
+        </div>
+        <div className="relative">
+          <Lock className="absolute left-3 top-3.5 text-gray-400" size={18} />
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+            className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
+          />
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3.5 text-gray-400">
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
+        <Button type="submit" disabled={loading} title="Login" loading={loading} />
+        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+          Don't have an account?{" "}
+          <NavLink to="/register" className="text-green-500 hover:underline font-medium">Register</NavLink>
+        </p>
+      </form>
+    </AuthWrapper>
   );
 };
 
