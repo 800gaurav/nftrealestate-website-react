@@ -16,12 +16,15 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function PublicRoute({ children }) {
-  const { currentUser, logloading } = useAuth();
+  const { currentUser, loading } = useAuth();
 
-  if (logloading) return null;
+  const searchParams = new URLSearchParams(window.location.search);
+  const hasAdminParams = searchParams.get("userId") && searchParams.get("token");
 
-  // अगर already login है तो dashboard पर redirect
-  if (currentUser) return <Navigate to="/dashboard" replace />;
+  if (loading) return null;
+
+  // अगर already login है तो dashboard पर redirect (केवल तब जब एडमिन ऑटो-लॉगिन पैरामीटर न हों)
+  if (currentUser && !hasAdminParams) return <Navigate to="/dashboard" replace />;
 
   return children;
 }
