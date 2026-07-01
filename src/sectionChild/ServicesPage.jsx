@@ -107,9 +107,9 @@ export default function ServicesPage() {
           <h2 className="text-2xl font-bold text-center mb-8">Income Plan</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { n: "1", title: "Staking Income",    val: "0.5% â€“ 1% Daily",   note: "40% of joining amount staked", color: "text-emerald-400" },
+              { n: "1", title: "Staking Income",    val: "0.5%  1% Daily",   note: "40% of joining amount staked", color: "text-emerald-400" },
               { n: "2", title: "Sponsor Income",    val: "10%",                note: "On direct referral package",  color: "text-blue-400" },
-              { n: "3", title: "Team Growth Bonus", val: "1% â€“ 3%",            note: "10 directs needed, $100 for 3%", color: "text-purple-400" },
+              { n: "3", title: "Team Growth Bonus", val: "1% 3%",            note: "10 directs needed, $100 for 3%", color: "text-purple-400" },
               { n: "4", title: "Matching Income",   val: "10%",                note: "2:1 then 1:1, daily cap $50/$100", color: "text-orange-400" },
             ].map(item => (
               <div key={item.n} className="bg-slate-800/60 rounded-xl p-5">

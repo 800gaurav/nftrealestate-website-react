@@ -98,11 +98,9 @@ const Dashboard = () => {
 
           {/* Team Report */}
           <ReportCard title="TEAM REPORT" icon={<FiUsers className="text-indigo-400" />}>
-            <div className="grid grid-cols-2 gap-4">
-              {/* <InfoItem label="Total Team"    value={data.totalTeamMembers || 0}          icon={<FiUsers className="text-indigo-400" />}   isCurrency={false} /> */}
-              <InfoItem label="Direct Team"   value={data.directReferrals || 0}           icon={<FiUser className="text-blue-400" />}      isCurrency={false} />
-              {/* <InfoItem label="Active Total"  value={data.totalActiveTeamMembers || 0}    icon={<FiActivity className="text-green-400" />} isCurrency={false} /> */}
-              <InfoItem label="Active Direct" value={data.directActiveReferrals || 0}     icon={<FiAward className="text-teal-400" />}    isCurrency={false} />
+            <div className="grid grid-cols-2 gap-3">
+              <TeamBox side="LEFT" total={data.leftTotal || 0} active={data.leftActive || 0} />
+              <TeamBox side="RIGHT" total={data.rightTotal || 0} active={data.rightActive || 0} />
             </div>
             <button
               onClick={() => navigate("/dashboard/teams/direct-team")}
@@ -178,6 +176,26 @@ const IncomeBar = ({ label, value, color }) => (
       <span className="text-gray-300">{label}</span>
     </div>
     <span className="font-semibold text-white">${value}</span>
+  </div>
+);
+
+const TeamBox = ({ side, total, active }) => (
+  <div className="bg-gray-700/50 border border-gray-600 rounded-xl p-3 text-center">
+    <p className={`text-xs font-bold uppercase tracking-wider mb-2 ${side === 'LEFT' ? 'text-blue-400' : 'text-purple-400'}`}>{side}</p>
+    <div className="space-y-1.5">
+      <div className="flex justify-between items-center">
+        <span className="text-xs text-gray-400">Total</span>
+        <span className="text-white font-bold text-sm">{total}</span>
+      </div>
+      <div className="flex justify-between items-center">
+        <span className="text-xs text-gray-400">Active</span>
+        <span className="text-green-400 font-bold text-sm">{active}</span>
+      </div>
+      <div className="flex justify-between items-center">
+        <span className="text-xs text-gray-400">Inactive</span>
+        <span className="text-red-400 font-bold text-sm">{total - active}</span>
+      </div>
+    </div>
   </div>
 );
 

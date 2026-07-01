@@ -12,7 +12,7 @@ export const ReferralBonusCard = ({ directActive, remainingDirect, progress }) =
 
 
       <h3 className="text-2xl font-extrabold text-white mb-2">
-        Earn <span className="text-yellow-300">3% Team Growth Business</span>
+        Earn <span className="text-yellow-300">1% Team Growth Business</span>
       </h3>
 
       <p className="text-white/90 mb-4">

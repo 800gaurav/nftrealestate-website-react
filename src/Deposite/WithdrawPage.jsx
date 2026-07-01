@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import useAxios from '../utils/useAxios';
 import { useAuth } from '../context/AuthContext';
-import { Wallet, AlertCircle, Info, CheckCircle } from 'lucide-react';
+import { Wallet, AlertCircle, Info, CheckCircle, AlertTriangle } from 'lucide-react';
 
 function WithdrawPage() {
   const [Data, setData] = useState({});
   const [withdrawMethod, setWithdrawMethod] = useState('');
   const [amount, setAmount] = useState('');
   const [hasPending, setHasPending] = useState(false);
+  const [addressMissing, setAddressMissing] = useState(false);
   const { setloading } = useAuth();
   const { fetchData } = useAxios();
+  const navigate = useNavigate();
 
   const user = Cookies.get('USER') ? JSON.parse(Cookies.get('USER')) : null;
   const userId = user?.userId;
@@ -23,7 +26,14 @@ function WithdrawPage() {
     try {
       setloading(true);
       const res = await fetchData({ url: `/api/v1/user/profile/user-dashboard/${userId}` });
-      setData(res.data || {});
+      const data = res.data || {};
+      setData(data);
+      // Check if withdraw address is set for selected method or both missing
+      const trc = data.withdrawTRC_ADDRESS;
+      const bep = data.withdrawBEP_ADDRESS;
+      if ((!trc || trc === '0') && (!bep || bep === '0')) {
+        setAddressMissing(true);
+      }
       setloading(false);
     } catch (error) {
       console.error(error);
@@ -46,9 +56,20 @@ function WithdrawPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (addressMissing) return toast.error('Please set your withdrawal address in profile settings first');
     if (!withdrawMethod) return toast.error('Please select withdrawal method');
     if (!amount || Number(amount) < 5) return toast.error('Minimum withdrawal amount is $5');
     if (hasPending) return toast.error('You already have a pending withdrawal request. Wait for it to be processed.');
+
+    // Check if selected method address is set
+    if (withdrawMethod === 'USDT.TRC20' && (!Data.withdrawTRC_ADDRESS || Data.withdrawTRC_ADDRESS === '0')) {
+      toast.error('TRC20 address not set. Please update your profile.');
+      return navigate('/update-profile');
+    }
+    if (withdrawMethod === 'USDT.BEP20' && (!Data.withdrawBEP_ADDRESS || Data.withdrawBEP_ADDRESS === '0')) {
+      toast.error('BEP20 address not set. Please update your profile.');
+      return navigate('/update-profile');
+    }
 
     try {
       setloading(true);
@@ -84,11 +105,25 @@ function WithdrawPage() {
               <p className="text-slate-400 text-xs mb-1">Wallet Balance</p>
               <p className="text-2xl font-bold text-emerald-400">${Number(Data?.walletBalance || 0).toFixed(2)}</p>
             </div>
-            <div className="bg-slate-900 border border-slate-700 rounded-xl p-4 text-center">
-              <p className="text-slate-400 text-xs mb-1">Fund Balance</p>
-              <p className="text-2xl font-bold text-blue-400">${Number(Data?.fundBalance || 0).toFixed(2)}</p>
-            </div>
+     
           </div>
+
+          {/* Address Missing Warning */}
+          {addressMissing && (
+            <div className="flex items-start gap-3 bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+              <AlertTriangle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-red-400 font-semibold text-sm">Withdrawal Address Not Set</p>
+                <p className="text-red-300/70 text-xs mt-1">Please set your TRC20 or BEP20 wallet address before making a withdrawal.</p>
+              </div>
+              <button
+                onClick={() => navigate('/update-profile')}
+                className="text-xs bg-red-500 hover:bg-red-400 text-white font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0"
+              >
+                Set Address
+              </button>
+            </div>
+          )}
 
           {/* Pending Warning */}
           {hasPending && (
