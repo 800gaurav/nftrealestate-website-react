@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
     cookies.set("TOKEN", data.token, { path: "/" });
     cookies.set("isLoggedIn", true, { path: "/" });
 
+    setdashboardData(null);
     setCurrentUser(userData);
     setToken(data.token);
     setIsLoggedIn(true);
@@ -45,6 +46,7 @@ export function AuthProvider({ children }) {
     cookies.remove("TOKEN", { path: "/" });
     cookies.remove("isLoggedIn", { path: "/" });
 
+    setdashboardData(null);
     setCurrentUser(null);
     setToken(null);
     setIsLoggedIn(false);
