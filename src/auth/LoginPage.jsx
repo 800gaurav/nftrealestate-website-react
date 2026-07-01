@@ -17,12 +17,9 @@ const LoginPage = () => {
   const location = useLocation();
 
   const user = location.state?.userdata;
- 
-  const { fetchData } = useAxios()
-  const [formData, setFormData] = useState({
-    userId: "",
-    password: "",
-  });
+
+  const { fetchData } = useAxios();
+  const [formData, setFormData] = useState({ userId: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(location.state?.fromSignup && location.state?.userdata);
@@ -36,35 +33,24 @@ const LoginPage = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  
   useEffect(() => {
-    if (userId || token) {
-      setFormData({
-        userId: userId,
-        password: token
-      });
-      handleLoginByadmin(userId, token)
+    if (userId && token) {
+      const decodedToken = decodeURIComponent(token);
+      handleLoginByadmin(userId, decodedToken);
     }
-  }, [])
-
-
-
-
+  }, []);
 
   const handleLoginByadmin = async (userIdw, tokenw) => {
     try {
       const res = await fetchData({
-        url: '/api/v1/user/auth/login',
+        url: "/api/v1/user/auth/login",
         method: "POST",
-        data: {
-          userId: userIdw,
-          usertoken: tokenw
-        }
+        data: { userId: userIdw, usertoken: tokenw },
       });
 
       if (res.success) {
-        navigate("/dashboard");
         login(res?.data);
+        navigate("/dashboard");
       } else {
         toast.error(res?.message || "Login failed");
       }
@@ -76,7 +62,6 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     if (!formData.userId || !formData.password) {
       toast.error("User ID and Password are required");
       return;
@@ -84,23 +69,21 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const res = await fetchData({
-        url: '/api/v1/user/auth/login',
+        url: "/api/v1/user/auth/login",
         method: "POST",
-        data: formData
+        data: formData,
       });
 
       if (res.success) {
-        navigate("/dashboard");
         login(res?.data);
-
-        showSuccessToast('Login Successfull!')
+        navigate("/dashboard");
+        showSuccessToast("Login Successfull!");
       } else {
-        showErrorToast(res?.message || "Login failed")
-
+        showErrorToast(res?.message || "Login failed");
       }
     } catch (err) {
       console.log(err);
-        showErrorToast(err?.message || "Login failed")
+      showErrorToast(err?.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -114,28 +97,21 @@ const LoginPage = () => {
 
   const closeUserInfoPopup = () => {
     setShowUserInfo(false);
-    // Remove the user data from location state to prevent the popup from showing again on refresh
     window.history.replaceState({}, document.title);
   };
 
-
-
   return (
     <>
-      {/* User Info Modal */}
       {showUserInfo && user && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          // className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-transparent bg-opacity-50"
-         className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={closeUserInfoPopup}
         >
-        
         </motion.div>
       )}
-
     </>
   );
 };
