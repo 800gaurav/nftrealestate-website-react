@@ -33,6 +33,8 @@ function WithdrawPage() {
       const bep = data.withdrawBEP_ADDRESS;
       if ((!trc || trc === '0') && (!bep || bep === '0')) {
         setAddressMissing(true);
+      } else {
+        setAddressMissing(false);
       }
       setloading(false);
     } catch (error) {
