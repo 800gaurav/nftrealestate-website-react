@@ -869,8 +869,6 @@ const NftRealEstateLanding = () => {
               );
             })}
           </div>
-
-          </div>
         </div>
       </section>
 
