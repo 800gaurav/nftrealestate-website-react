@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Eye, EyeOff, Lock, User } from "lucide-react";
 import Swal from "sweetalert2";
@@ -22,22 +22,6 @@ const AuthPage = () => {
   const userId = searchParams?.get("userId");
   const token = searchParams?.get("token");
 
-  const fetchAlertMessage = async () => {
-    try {
-      const res = await fetchData({ url: "/api/v1/admin/user/get-banner" });
-      if (res.show) {
-        Swal.fire({
-          title: `<span style="font-size: 16px; font-weight: bold;">${res.message}</span>`,
-          background: "#1a202c",
-          color: "white",
-          confirmButtonColor: "#02D396",
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleLoginByAdmin = async (adminUserId, adminToken) => {
     try {
       const res = await fetchData({
@@ -58,11 +42,7 @@ const AuthPage = () => {
   };
 
   useEffect(() => {
-    fetchAlertMessage();
-  }, []);
-
-  useEffect(() => {
-    if (userId || token) {
+    if (userId && token) {
       setFormData({ userId: userId || "", password: token || "" });
       handleLoginByAdmin(userId, token);
     }
