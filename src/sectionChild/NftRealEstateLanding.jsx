@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,10 +8,131 @@ import {
   Rocket, ChevronRight, Menu, X, Landmark, FileText, HelpCircle,
   Phone, Mail, Heart, Leaf, Layers, ChevronDown
 } from 'lucide-react';
+import useAxios from '../utils/useAxios';
+
+const INITIAL_PACKAGES = [
+  {
+    code: "S1",
+    rank: "Starter",
+    price: 12,
+    badgeText: "Entry Level",
+    badgeClass: "bg-teal-500/10 text-teal-400 border-teal-500/20",
+    borderClass: "border-slate-800 hover:border-teal-500/30",
+    iconColor: "text-teal-400",
+    btnClass: "bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white",
+    features: [
+      "Staking Income (0.5% 1% daily)",
+      "No signup bonus",
+      "Team Growth Bonus 1%",
+      "Basic Dashboard Access",
+    ]
+  },
+  {
+    code: "S2",
+    rank: "Silver",
+    price: 25,
+    badgeText: "Grow Faster",
+    badgeClass: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    borderClass: "border-slate-800 hover:border-blue-500/30",
+    iconColor: "text-blue-400",
+    btnClass: "bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white",
+    features: [
+      "All Starter Benefits",
+      "Higher Staking Rate",
+      "Team Growth Bonus 2%",
+      "Priority Support 24/7",
+    ]
+  },
+  {
+    code: "S3",
+    rank: "Gold",
+    price: 50,
+    badgeText: "Most Popular",
+    isAbsoluteBadge: true,
+    badgeClass: "bg-yellow-500 text-slate-950 border-yellow-400",
+    borderClass: "border-yellow-500/30 hover:border-yellow-500/50 shadow-lg shadow-yellow-500/5",
+    iconColor: "text-yellow-400",
+    btnClass: "bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-slate-950",
+    features: [
+      "All Silver Benefits",
+      "10% Matching Income",
+      "Full Rank Eligibility",
+      "Dedicated Account Manager",
+    ]
+  },
+  {
+    code: "S4",
+    rank: "Platinum",
+    price: 100,
+    badgeText: "Best Value",
+    badgeClass: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+    borderClass: "border-slate-800 hover:border-purple-500/30",
+    iconColor: "text-purple-400",
+    btnClass: "bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white",
+    features: [
+      "All Benefits Unlocked",
+      "3% Max Team Bonus",
+      "All 4 Income Streams",
+      "VIP Investor Benefits",
+    ]
+  }
+];
+
+const PKG_CONFIGS = {
+  S1: {
+    badgeText: "Entry Level",
+    badgeClass: "bg-teal-500/10 text-teal-400 border-teal-500/20",
+    borderClass: "border-slate-800 hover:border-teal-500/30",
+    iconColor: "text-teal-400",
+    btnClass: "bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white",
+  },
+  S2: {
+    badgeText: "Grow Faster",
+    badgeClass: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    borderClass: "border-slate-800 hover:border-blue-500/30",
+    iconColor: "text-blue-400",
+    btnClass: "bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white",
+  },
+  S3: {
+    badgeText: "Most Popular",
+    isAbsoluteBadge: true,
+    badgeClass: "bg-yellow-500 text-slate-950 border-yellow-400",
+    borderClass: "border-yellow-500/30 hover:border-yellow-500/50 shadow-lg shadow-yellow-500/5",
+    iconColor: "text-yellow-400",
+    btnClass: "bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-slate-950",
+  },
+  S4: {
+    badgeText: "Best Value",
+    badgeClass: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+    borderClass: "border-slate-800 hover:border-purple-500/30",
+    iconColor: "text-purple-400",
+    btnClass: "bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white",
+  }
+};
 
 const NftRealEstateLanding = () => {
   const navigate = useNavigate();
   const [copiedText, setCopiedText] = useState('');
+  const [packages, setPackages] = useState(INITIAL_PACKAGES);
+  const { fetchData } = useAxios();
+
+  useEffect(() => {
+    fetchData({ url: '/api/v1/admin/user/get-plans' })
+      .then((res) => {
+        if (res?.data?.plans) {
+          const styled = res.data.plans.map((pkg, idx) => {
+            const config = PKG_CONFIGS[pkg.code] || PKG_CONFIGS[Object.keys(PKG_CONFIGS)[idx % 4]];
+            return {
+              ...pkg,
+              ...config,
+              badgeText: pkg.badge ? (pkg.badge === "MOST POPULAR" ? "Most Popular" : pkg.badge === "BEST VALUE" ? "Best Value" : pkg.badge) : config.badgeText,
+            };
+          });
+          setPackages(styled);
+        }
+      })
+      .catch(() => {});
+  }, []);
   
   // Counters for Slide 1
   const stats = [
@@ -711,92 +832,43 @@ const NftRealEstateLanding = () => {
           </div>
 
           <div className="grid md:grid-cols-4 gap-6">
-            
-            {/* Starter */}
-            <div className="border border-slate-800 bg-slate-950/60 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between hover:border-teal-500/30 transition-all">
-              <div>
-                <span className="text-[9px] font-extrabold uppercase tracking-widest bg-teal-500/10 text-teal-400 px-2.5 py-1 rounded-full border border-teal-500/20">Entry Level</span>
-                <h3 className="text-xl font-bold text-white mt-4 mb-2">Starter</h3>
-                <div className="my-6">
-                  <span className="text-4xl font-extrabold text-white">$12</span>
-                  <span className="text-xs text-gray-400"> USD</span>
+            {packages.map((pkg) => {
+              const isAbsolute = pkg.isAbsoluteBadge;
+              return (
+                <div key={pkg.code} className={`border ${pkg.borderClass} bg-slate-950/60 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between transition-all`}>
+                  {pkg.badgeText && isAbsolute && (
+                    <span className={`absolute -top-3 left-1/2 transform -translate-x-1/2 ${pkg.badgeClass} text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border`}>
+                      {pkg.badgeText}
+                    </span>
+                  )}
+                  <div>
+                    {pkg.badgeText && !isAbsolute && (
+                      <div>
+                        <span className={`text-[9px] font-extrabold uppercase tracking-widest ${pkg.badgeClass} px-2.5 py-1 rounded-full border`}>
+                          {pkg.badgeText}
+                        </span>
+                      </div>
+                    )}
+                    <h3 className="text-xl font-bold text-white mt-4 mb-2">{pkg.rank || pkg.title}</h3>
+                    <div className="my-6">
+                      <span className="text-4xl font-extrabold text-white">${pkg.price}</span>
+                      <span className="text-xs text-gray-400"> USD</span>
+                    </div>
+                    <ul className="space-y-3.5 text-xs text-gray-300 pt-6 border-t border-gray-900">
+                      {(pkg.features || []).map((feature, fIdx) => (
+                        <li key={fIdx} className="flex items-center gap-2">
+                          <Check className={`h-4 w-4 ${pkg.iconColor}`} /> {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button onClick={() => navigate(`/dashboard/funds/deposit?package=${pkg.code}`)} className={`w-full font-bold py-2.5 rounded-xl text-xs mt-8 transition-colors ${pkg.btnClass}`}>
+                    Select {pkg.rank || pkg.title}
+                  </button>
                 </div>
-                <ul className="space-y-3.5 text-xs text-gray-300 pt-6 border-t border-gray-900">
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> Staking Income (0.5% 1% daily)</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> No signup bonus</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> Team Growth Bonus 1%</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-teal-400" /> Basic Dashboard Access</li>
-                </ul>
-              </div>
-              <button onClick={() => navigate('/dashboard/funds/deposit?package=S1')} className="w-full bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white font-bold py-2.5 rounded-xl text-xs mt-8 transition-colors">
-                Select Starter
-              </button>
-            </div>
-
-            {/* Silver */}
-            <div className="border border-slate-800 bg-slate-950/60 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between hover:border-blue-500/30 transition-all">
-              <div>
-                <span className="text-[9px] font-extrabold uppercase tracking-widest bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full border border-blue-500/20">Grow Faster</span>
-                <h3 className="text-xl font-bold text-white mt-4 mb-2">Silver</h3>
-                <div className="my-6">
-                  <span className="text-4xl font-extrabold text-white">$25</span>
-                  <span className="text-xs text-gray-400"> USD</span>
-                </div>
-                <ul className="space-y-3.5 text-xs text-gray-300 pt-6 border-t border-gray-900">
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-blue-400" /> All Starter Benefits</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-blue-400" /> Higher Staking Rate</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-blue-400" /> Team Growth Bonus 2%</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-blue-400" /> Priority Support 24/7</li>
-                </ul>
-              </div>
-              <button onClick={() => navigate('/dashboard/funds/deposit?package=S2')} className="w-full bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white font-bold py-2.5 rounded-xl text-xs mt-8 transition-colors">
-                Select Silver
-              </button>
-            </div>
-
-            {/* Gold */}
-            <div className="border border-yellow-500/30 bg-slate-950/60 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between hover:border-yellow-500/50 transition-all shadow-lg shadow-yellow-500/5">
-              <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-slate-950 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-yellow-400">
-                Most Popular
-              </span>
-              <div>
-                <h3 className="text-xl font-bold text-white mt-4 mb-2">Gold</h3>
-                <div className="my-6">
-                  <span className="text-4xl font-extrabold text-white">$50</span>
-                  <span className="text-xs text-gray-400"> USD</span>
-                </div>
-                <ul className="space-y-3.5 text-xs text-gray-300 pt-6 border-t border-gray-900">
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-400" /> All Silver Benefits</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-400" /> 10% Matching Income</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-400" /> Full Rank Eligibility</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-400" /> Dedicated Account Manager</li>
-                </ul>
-              </div>
-              <button onClick={() => navigate('/dashboard/funds/deposit?package=S3')} className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-slate-950 font-bold py-2.5 rounded-xl text-xs mt-8 transition-colors">
-                Select Gold
-              </button>
-            </div>
-
-            {/* Platinum */}
-            <div className="border border-slate-800 bg-slate-950/60 backdrop-blur-md rounded-2xl p-6 relative flex flex-col justify-between hover:border-purple-500/30 transition-all">
-              <div>
-                <span className="text-[9px] font-extrabold uppercase tracking-widest bg-purple-500/10 text-purple-400 px-2.5 py-1 rounded-full border border-purple-500/20">Best Value</span>
-                <h3 className="text-xl font-bold text-white mt-4 mb-2">Platinum</h3>
-                <div className="my-6">
-                  <span className="text-4xl font-extrabold text-white">$100</span>
-                  <span className="text-xs text-gray-400"> USD</span>
-                </div>
-                <ul className="space-y-3.5 text-xs text-gray-300 pt-6 border-t border-gray-900">
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> All Benefits Unlocked</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> 3% Max Team Bonus</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> All 4 Income Streams</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-purple-400" /> VIP Investor Benefits</li>
-                </ul>
-              </div>
-              <button onClick={() => navigate('/dashboard/funds/deposit?package=S4')} className="w-full bg-slate-900 hover:bg-slate-800 border border-gray-800 text-white font-bold py-2.5 rounded-xl text-xs mt-8 transition-colors">
-                Select Platinum
-              </button>
-            </div>
+              );
+            })}
+          </div>
 
           </div>
         </div>

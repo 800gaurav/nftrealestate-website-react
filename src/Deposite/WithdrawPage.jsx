@@ -64,11 +64,11 @@ function WithdrawPage() {
     // Check if selected method address is set
     if (withdrawMethod === 'USDT.TRC20' && (!Data.withdrawTRC_ADDRESS || Data.withdrawTRC_ADDRESS === '0')) {
       toast.error('TRC20 address not set. Please update your profile.');
-      return navigate('/update-profile');
+      return navigate('/dashboard/profile/update-profile');
     }
     if (withdrawMethod === 'USDT.BEP20' && (!Data.withdrawBEP_ADDRESS || Data.withdrawBEP_ADDRESS === '0')) {
       toast.error('BEP20 address not set. Please update your profile.');
-      return navigate('/update-profile');
+      return navigate('/dashboard/profile/update-profile');
     }
 
     try {
@@ -117,7 +117,7 @@ function WithdrawPage() {
                 <p className="text-red-300/70 text-xs mt-1">Please set your TRC20 or BEP20 wallet address before making a withdrawal.</p>
               </div>
               <button
-                onClick={() => navigate('/update-profile')}
+                onClick={() => navigate('/dashboard/profile/update-profile')}
                 className="text-xs bg-red-500 hover:bg-red-400 text-white font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0"
               >
                 Set Address

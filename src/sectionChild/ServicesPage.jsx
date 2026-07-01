@@ -1,4 +1,5 @@
-﻿import { useState } from "react";
+import { useState, useEffect } from "react";
+import useAxios from "../utils/useAxios";
 import {
   Building2, TrendingUp, Layers, Rocket, DollarSign,
   ShoppingBag, Plane, Landmark, BookOpen, Shield,
@@ -25,15 +26,41 @@ const SERVICES = [
   { icon: HeartPulse, title: "Health Service",          desc: "Integrated wellness and healthcare access benefits for all members.", color: "text-fuchsia-400", bg: "bg-fuchsia-400/10 border-fuchsia-400/20" },
 ];
 
-const PACKAGES = [
+const INITIAL_PACKAGES = [
   { rank: "1st", price: "$12",  label: "Starter",  color: "border-slate-500",  badge: null },
   { rank: "2nd", price: "$25",  label: "Silver",   color: "border-blue-500",   badge: null },
   { rank: "3rd", price: "$50",  label: "Gold",     color: "border-yellow-500", badge: "POPULAR" },
   { rank: "4th", price: "$100", label: "Platinum", color: "border-cyan-500",   badge: "BEST" },
 ];
 
+const PKG_COLORS = {
+  S1: "border-slate-500",
+  S2: "border-blue-500",
+  S3: "border-yellow-500",
+  S4: "border-cyan-500",
+};
+
 export default function ServicesPage() {
   const [modalService, setModalService] = useState(null);
+  const [packages, setPackages] = useState(INITIAL_PACKAGES);
+  const { fetchData } = useAxios();
+
+  useEffect(() => {
+    fetchData({ url: "/api/v1/admin/user/get-plans" })
+      .then((res) => {
+        if (res?.data?.plans) {
+          const styled = res.data.plans.map((pkg, idx) => ({
+            rank: `${idx + 1}${idx === 0 ? 'st' : idx === 1 ? 'nd' : idx === 2 ? 'rd' : 'th'}`,
+            price: `$${pkg.price}`,
+            label: pkg.rank || pkg.title,
+            color: PKG_COLORS[pkg.code] || PKG_COLORS.S1,
+            badge: pkg.badge ? (pkg.badge === "MOST POPULAR" ? "POPULAR" : pkg.badge === "BEST VALUE" ? "BEST" : pkg.badge) : null,
+          }));
+          setPackages(styled);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleContact = (service) => {
     const subject = encodeURIComponent(`Service Enquiry: ${service.title}`);
@@ -59,9 +86,8 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        {/* Package cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {PACKAGES.map(pkg => (
+          {packages.map(pkg => (
             <div key={pkg.rank} className={`relative rounded-2xl border-2 ${pkg.color} bg-slate-900/60 p-5 text-center hover:bg-slate-900 transition-colors`}>
               {pkg.badge && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-500 text-black text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">

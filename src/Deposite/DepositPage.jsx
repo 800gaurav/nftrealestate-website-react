@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useAxios from '../utils/useAxios';
 import { useAuth } from '../context/AuthContext';
@@ -6,7 +6,7 @@ import { Sparkles, CheckCircle, ArrowRight, Wallet, AlertTriangle } from 'lucide
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 
-const PACKAGES = [
+const INITIAL_PACKAGES = [
   {
     code: 'S1', rank: 'Starter', price: 12,
     color: 'from-slate-700 to-slate-800', border: 'border-slate-600', accent: 'text-slate-300',
@@ -31,6 +31,13 @@ const PACKAGES = [
   },
 ];
 
+const PKG_STYLES = {
+  S1: { color: 'from-slate-700 to-slate-800', border: 'border-slate-600', accent: 'text-slate-300', badgeCls: '' },
+  S2: { color: 'from-gray-600 to-gray-700', border: 'border-gray-500', accent: 'text-gray-200', badgeCls: '' },
+  S3: { color: 'from-yellow-700 to-yellow-800', border: 'border-yellow-500', accent: 'text-yellow-300', badgeCls: 'bg-yellow-500 text-black' },
+  S4: { color: 'from-cyan-800 to-cyan-900', border: 'border-cyan-400', accent: 'text-cyan-300', badgeCls: 'bg-cyan-500 text-black' },
+};
+
 const getPaymentUrl = (payload) => (
   payload?.data?.payment_url ||
   payload?.data?.invoice_url ||
@@ -44,6 +51,8 @@ const getPaymentUrl = (payload) => (
 );
 
 export default function DepositPage() {
+  const [packages, setPackages] = useState(INITIAL_PACKAGES);
+  const [joiningPercent, setJoiningPercent] = useState(40);
   const [processingCode, setProcessingCode] = useState('');
   const [fundBalance, setFundBalance] = useState(0);
   const [confirmModal, setConfirmModal] = useState(null); // { pkg }
@@ -58,6 +67,23 @@ export default function DepositPage() {
       .then((res) => setFundBalance(res?.data?.fundBalance || 0))
       .catch(() => {});
   }, [userId]);
+
+  useEffect(() => {
+    fetchData({ url: '/api/v1/admin/user/get-plans' })
+      .then((res) => {
+        if (res?.data?.plans) {
+          const styled = res.data.plans.map((pkg, idx) => ({
+            ...pkg,
+            ...(PKG_STYLES[pkg.code] || PKG_STYLES[Object.keys(PKG_STYLES)[idx % 4]]),
+          }));
+          setPackages(styled);
+        }
+        if (res?.data?.incomePlan?.joining?.percentOfJoiningAmount) {
+          setJoiningPercent(res.data.incomePlan.joining.percentOfJoiningAmount);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Fund wallet se purchase
   const handleFundWalletBuy = async () => {
@@ -174,7 +200,7 @@ export default function DepositPage() {
         )}
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {PACKAGES.map((pkg) => {
+          {packages.map((pkg) => {
             const isProcessing = processingCode === pkg.code;
             const canUseFund = fundBalance >= pkg.price;
             return (
@@ -190,7 +216,7 @@ export default function DepositPage() {
                 <div>
                   <p className="text-slate-400 text-sm font-medium">{pkg.rank}</p>
                   <p className={`text-4xl font-extrabold ${pkg.accent} mt-1`}>${pkg.price}</p>
-                  <p className="text-xs text-slate-400 mt-2">Staking allocation: ${(pkg.price * 0.4).toFixed(2)}</p>
+                  <p className="text-xs text-slate-400 mt-2">Staking allocation: ${(pkg.price * (joiningPercent / 100)).toFixed(2)}</p>
                   {canUseFund && (
                     <p className="text-xs text-emerald-400 mt-1 flex items-center gap-1">
                       <Wallet className="h-3 w-3" /> Payable via Fund Wallet
