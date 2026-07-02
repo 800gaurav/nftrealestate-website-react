@@ -44,6 +44,7 @@ const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [referralLocked, setReferralLocked] = useState(false);
+  const [sideLocked, setSideLocked] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -52,13 +53,18 @@ const SignUpPage = () => {
   const [searchParams] = useSearchParams();
   const referralID = searchParams.get('referalID');
   const name = searchParams.get('username');
+  const linkSide = searchParams.get('side');
 
   useEffect(() => {
     if (referralID) {
       setReferralCode(referralID);
       setReferralLocked(true);
     }
-  }, []);
+    if (linkSide === "right" || linkSide === "left") {
+      setSide(linkSide);
+      setSideLocked(true);
+    }
+  }, [referralID, linkSide]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -143,23 +149,21 @@ const SignUpPage = () => {
               <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Placement Side <span className="text-yellow-400">*</span>
               </label>
-              <div className="grid grid-cols-2 gap-3">
-                {["left", "right"].map((val) => (
-                  <button
-                    key={val}
-                    type="button"
-                    onClick={() => setSide(val)}
-                    className={`flex items-center justify-center gap-2 py-3 rounded-xl border text-sm font-semibold transition-all ${
-                      side === val
-                        ? "bg-gradient-to-r from-yellow-500 to-amber-500 border-transparent text-slate-950 shadow-lg shadow-yellow-500/20"
-                        : "bg-slate-900/60 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-300"
-                    }`}
-                  >
+              {sideLocked ? (
+                <div className="flex items-center justify-between rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-yellow-300">
                     <GitBranch size={14} />
-                    {val.charAt(0).toUpperCase() + val.slice(1)}
-                  </button>
-                ))}
-              </div>
+                    {side.charAt(0).toUpperCase() + side.slice(1)} Side
+                  </div>
+                  <span className="rounded-full bg-yellow-400/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-yellow-300">
+                    Referral Link
+                  </span>
+                </div>
+              ) : (
+                <div className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3 text-sm text-slate-400">
+                  Please use your sponsor's left or right referral link to join.
+                </div>
+              )}
             </div>
 
             {/* Username */}

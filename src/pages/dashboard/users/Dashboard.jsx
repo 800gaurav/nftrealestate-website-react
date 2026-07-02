@@ -119,11 +119,11 @@ const Dashboard = () => {
           {/* Team Report */}
           <ReportCard title="TEAM REPORT" icon={<FiUsers className="text-indigo-400" />}>
             <div className="grid grid-cols-2 gap-3">
-              <TeamBox side="LEFT" total={data.leftTotal || 0} active={data.leftActive || 0} />
-              <TeamBox side="RIGHT" total={data.rightTotal || 0} active={data.rightActive || 0} />
+              <TeamBox side="LEFT" total={data.leftTotal || 0} active={data.leftActive || 0} business={data.leftTeamBusiness || 0} />
+              <TeamBox side="RIGHT" total={data.rightTotal || 0} active={data.rightActive || 0} business={data.rightTeamBusiness || 0} />
             </div>
             <button
-              onClick={() => navigate("/dashboard/teams/direct-team")}
+              onClick={() => navigate("/dashboard/teams/tree")}
               className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg flex items-center justify-center transition-colors"
             >
               View Team Tree <FiArrowRight className="ml-2" />
@@ -199,7 +199,7 @@ const IncomeBar = ({ label, value, color }) => (
   </div>
 );
 
-const TeamBox = ({ side, total, active }) => (
+const TeamBox = ({ side, total, active, business }) => (
   <div className="bg-gray-700/50 border border-gray-600 rounded-xl p-3 text-center">
     <p className={`text-xs font-bold uppercase tracking-wider mb-2 ${side === 'LEFT' ? 'text-blue-400' : 'text-purple-400'}`}>{side}</p>
     <div className="space-y-1.5">
@@ -215,6 +215,10 @@ const TeamBox = ({ side, total, active }) => (
         <span className="text-xs text-gray-400">Inactive</span>
         <span className="text-red-400 font-bold text-sm">{total - active}</span>
       </div>
+      {/* <div className="flex justify-between items-center">
+        <span className="text-xs text-gray-400">Business</span>
+        <span className="text-cyan-300 font-bold text-sm">${Number(business || 0).toFixed(2)}</span>
+      </div> */}
     </div>
   </div>
 );

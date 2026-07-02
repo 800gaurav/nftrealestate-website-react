@@ -237,7 +237,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
 const TopHeader = ({ collapsed, mobileOpen, setMobileOpen }) => {
   const { logout, currentUser, dashboardData } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState("");
   const dropRef = useRef(null);
   const navigate = useNavigate();
 
@@ -248,12 +248,13 @@ const TopHeader = ({ collapsed, mobileOpen, setMobileOpen }) => {
   const referralCode = currentUser?.referralCode || userFromCookie?.referralCode || "";
   const isActivated = dashboardData?.isActivated ?? true;
 
-  const referralLink = `${window.location.origin}/signup?referalID=${referralCode}&username=${encodeURIComponent(displayName)}`;
+  const getReferralLink = (side) =>
+    `${window.location.origin}/signup?referalID=${referralCode}&username=${encodeURIComponent(displayName)}&side=${side}`;
 
-  const copyRef = () => {
-    navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyRef = (side) => {
+    navigator.clipboard.writeText(getReferralLink(side));
+    setCopied(side);
+    setTimeout(() => setCopied(""), 2000);
   };
 
   useEffect(() => {
@@ -339,9 +340,20 @@ const TopHeader = ({ collapsed, mobileOpen, setMobileOpen }) => {
                     <p className="text-[10px] text-slate-500">Referral Code</p>
                     <div className="flex items-center gap-2 mt-0.5">
                       <code className="text-sm text-cyan-300 font-mono font-semibold flex-1 truncate">{referralCode || "N/A"}</code>
-                      <button onClick={copyRef} className="shrink-0 text-slate-400 hover:text-white transition-colors p-1 rounded hover:bg-white/10">
-                        {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
-                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      {["left", "right"].map((side) => (
+                        <button
+                          key={side}
+                          type="button"
+                          disabled={!referralCode}
+                          onClick={() => copyRef(side)}
+                          className="flex items-center justify-center gap-1.5 rounded-lg border border-cyan-500/20 bg-cyan-500/10 px-2 py-1.5 text-[11px] font-bold text-cyan-200 transition-colors hover:bg-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {copied === side ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                          Copy {side === "left" ? "Left" : "Right"} Link
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
