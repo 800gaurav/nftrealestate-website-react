@@ -100,14 +100,14 @@ export default function IncomeReportPage() {
                   <tr><td colSpan={7} className="text-center text-slate-500 py-12 text-sm">No income history found yet.</td></tr>
                 )}
               </tbody>
-              {rows.length > 0 && (
+              {/* {rows.length > 0 && (
                 <tfoot>
                   <tr className="border-t border-slate-700 bg-slate-800/40">
                     <td colSpan={6} className="px-4 py-3 text-slate-400 text-xs font-semibold">Total</td>
                     <td className="px-4 py-3 text-right text-emerald-400 font-bold text-sm">{fmt(rows.reduce((s, r) => s + Number(r.amount || 0), 0))}</td>
                   </tr>
                 </tfoot>
-              )}
+              )} */}
             </table>
           </div>
         </div>

@@ -28,17 +28,28 @@ const makeNode = (user, isEmpty = false) => {
       createdAt: user.createdAt,
       isEmpty: false,
       _loaded: false,
+      leftTotal: user.leftTotal || 0,
+      leftActive: user.leftActive || 0,
+      rightTotal: user.rightTotal || 0,
+      rightActive: user.rightActive || 0,
     },
     children: [],
   };
 };
 
-const inject = (tree, targetId, left, right) => {
+const inject = (tree, targetId, left, right, targetUser = null) => {
   if (!tree) return null;
   if (tree.attributes?._id === targetId) {
     return {
       ...tree,
-      attributes: { ...tree.attributes, _loaded: true },
+      attributes: {
+        ...tree.attributes,
+        _loaded: true,
+        leftTotal: targetUser?.leftTotal ?? tree.attributes.leftTotal,
+        leftActive: targetUser?.leftActive ?? tree.attributes.leftActive,
+        rightTotal: targetUser?.rightTotal ?? tree.attributes.rightTotal,
+        rightActive: targetUser?.rightActive ?? tree.attributes.rightActive,
+      },
       children: [
         left  ? makeNode(left)  : makeNode(null, true),
         right ? makeNode(right) : makeNode(null, true),
@@ -47,7 +58,7 @@ const inject = (tree, targetId, left, right) => {
   }
   return {
     ...tree,
-    children: (tree.children || []).map(c => inject(c, targetId, left, right)),
+    children: (tree.children || []).map(c => inject(c, targetId, left, right, targetUser)),
   };
 };
 
@@ -110,6 +121,44 @@ const CustomNode = ({ nodeDatum, onNodeClick, onMouseOver, onMouseOut }) => {
   );
 };
 
+// ─── TeamBox ──────────────────────────────────────────────────────────────────
+const TeamBox = ({ side, total, active }) => {
+  const isLeft = side === "LEFT";
+  return (
+    <div style={{
+      background: "#182235",
+      border: "1px solid #33415577",
+      borderRadius: 12,
+      padding: "10px 12px",
+      flex: 1,
+    }}>
+      <p style={{
+        fontSize: 11,
+        fontWeight: 800,
+        textAlign: "center",
+        textTransform: "uppercase",
+        letterSpacing: 1.2,
+        margin: "0 0 8px 0",
+        color: isLeft ? "#60a5fa" : "#c084fc",
+      }}>{side}</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 10, color: "#94a3b8" }}>Total</span>
+          <span style={{ fontSize: 11, color: "white", fontWeight: 700 }}>{total}</span>
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 10, color: "#94a3b8" }}>Active</span>
+          <span style={{ fontSize: 11, color: "#4ade80", fontWeight: 700 }}>{active}</span>
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 10, color: "#94a3b8" }}>Inactive</span>
+          <span style={{ fontSize: 11, color: "#ef4444", fontWeight: 700 }}>{Math.max(0, total - active)}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ─── Tooltip ──────────────────────────────────────────────────────────────────
 const Tooltip = ({ user, pos }) => {
   if (!user) return null;
@@ -158,6 +207,12 @@ const Tooltip = ({ user, pos }) => {
           </div>
         ))}
       </div>
+
+      <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+        <TeamBox side="LEFT" total={user.leftTotal || 0} active={user.leftActive || 0} />
+        <TeamBox side="RIGHT" total={user.rightTotal || 0} active={user.rightActive || 0} />
+      </div>
+
       <p style={{ color: "#334155", fontSize: 9, textAlign: "center", marginTop: 10, margin: "10px 0 0" }}>
         Click to load children
       </p>
@@ -213,7 +268,7 @@ export default function BinaryTreePage() {
         setTree(root);
       } else {
         setTree(prev =>
-          JSON.parse(JSON.stringify(inject(prev, id, user.leftChild, user.rightChild)))
+          JSON.parse(JSON.stringify(inject(prev, id, user.leftChild, user.rightChild, user)))
         );
       }
     } catch (e) {

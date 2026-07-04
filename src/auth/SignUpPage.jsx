@@ -134,7 +134,7 @@ const SignUpPage = () => {
                 type="text"
                 value={referralCode}
                 onChange={(e) => setReferralCode(e.target.value)}
-                placeholder={name ? `Referred by: ${name}` : "Enter referral code (optional)"}
+                placeholder={name ? `Referred by: ${name}` : "Enter referral code"}
                 className={`${inputClass} disabled:opacity-50 disabled:cursor-not-allowed`}
               />
               {referralLocked && name && (
@@ -149,21 +149,32 @@ const SignUpPage = () => {
               <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Placement Side <span className="text-yellow-400">*</span>
               </label>
-              {sideLocked ? (
-                <div className="flex items-center justify-between rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-yellow-300">
-                    <GitBranch size={14} />
-                    {side.charAt(0).toUpperCase() + side.slice(1)} Side
-                  </div>
-                  <span className="rounded-full bg-yellow-400/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-yellow-300">
-                    Referral Link
-                  </span>
-                </div>
-              ) : (
-                <div className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3 text-sm text-slate-400">
-                  Please use your sponsor's left or right referral link to join.
-                </div>
-              )}
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setSide("left")}
+                  className={`py-2.5 px-4 rounded-xl border text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+                    side === "left"
+                      ? "bg-yellow-500/15 border-yellow-500 text-yellow-400 shadow-lg shadow-yellow-500/5"
+                      : "bg-slate-900/60 border-slate-700 text-slate-400 hover:border-slate-600 hover:bg-slate-900"
+                  }`}
+                >
+                  <GitBranch size={14} />
+                  Left
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSide("right")}
+                  className={`py-2.5 px-4 rounded-xl border text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+                    side === "right"
+                      ? "bg-yellow-500/15 border-yellow-500 text-yellow-400 shadow-lg shadow-yellow-500/5"
+                      : "bg-slate-900/60 border-slate-700 text-slate-400 hover:border-slate-600 hover:bg-slate-900"
+                  }`}
+                >
+                  <GitBranch size={14} />
+                  Right
+                </button>
+              </div>
             </div>
 
             {/* Username */}

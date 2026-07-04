@@ -99,7 +99,7 @@ const Dashboard = () => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <StatCard title="Wallet Balance"  value={fmt(data.walletBalance)}       icon={<FiDollarSign className="text-white" />} gradient="from-emerald-500 to-green-400"  sub="Available to withdraw" />
+          <StatCard title="Current Balance"  value={fmt(data.walletBalance)}       icon={<FiDollarSign className="text-white" />} gradient="from-emerald-500 to-green-400"  sub="Available to withdraw" />
           <StatCard title="Today Income"  value={fmt(data.todayIncome)}        icon={<FiCreditCard className="text-white" />}  gradient="from-blue-500 to-cyan-400"     sub="Package amount" />
           <StatCard title="Fund Wallet"     value={fmt(data.fundBalance)}          icon={<FiGift className="text-white" />}       gradient="from-rose-500 to-pink-400"     sub="Use to buy packages" />
           <StatCard title="Total Earned"    value={fmt(data.totalProfitEarned)}    icon={<FiTrendingUp className="text-white" />}  gradient="from-purple-500 to-indigo-400" sub="Lifetime income" />
@@ -111,7 +111,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-2 gap-4">
               <InfoItem label="Total Invest"    value={fmt(data.totalInvested)}       icon={<FiTrendingUp className="text-purple-400" />} isCurrency={false} />
               <InfoItem label="Team Business"   value={fmt(data.totalTeamBusiness)}   icon={<FiBriefcase className="text-orange-400" />}  isCurrency={false} />
-              <InfoItem label="Wallet Balance"  value={fmt(data.walletBalance)}        icon={<FiDollarSign className="text-emerald-400" />} isCurrency={false} />
+              <InfoItem label="Current Balance"  value={fmt(data.walletBalance)}        icon={<FiDollarSign className="text-emerald-400" />} isCurrency={false} />
               <InfoItem label="Fund Wallet"     value={fmt(data.fundBalance)}          icon={<FiGift className="text-rose-400" />}         isCurrency={false} />
             </div>
           </ReportCard>

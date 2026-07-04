@@ -24,7 +24,7 @@ const SERVICES = [
   { icon: TrendingUp,  title: "Income Service",         desc: "Structured income programs including staking, referral, matching, and rank reward streams.", color: "text-amber-400",   border: "border-amber-500/30",   bg: "bg-amber-500/5"    },
 ];
 
-const COMPANY_EMAIL = "support@nftrealestate.us";
+const COMPANY_EMAIL = "supportnftrealestate@gmail.com";
 
 const handleEnquire = (serviceTitle) => {
   const subject = encodeURIComponent(`Service Enquiry: ${serviceTitle}`);
