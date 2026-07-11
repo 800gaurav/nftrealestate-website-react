@@ -54,6 +54,7 @@ const SignUpPage = () => {
   const referralID = searchParams.get('referalID');
   const name = searchParams.get('username');
   const linkSide = searchParams.get('side');
+  const placementParentId = searchParams.get('placementParentId');
 
   useEffect(() => {
     if (referralID) {
@@ -79,6 +80,7 @@ const SignUpPage = () => {
       email,
       password,
       side,
+      placementParentId: placementParentId || null,
     };
     try {
       setLoading(true);
@@ -152,29 +154,36 @@ const SignUpPage = () => {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
+                  disabled={sideLocked}
                   onClick={() => setSide("left")}
                   className={`py-2.5 px-4 rounded-xl border text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
                     side === "left"
                       ? "bg-yellow-500/15 border-yellow-500 text-yellow-400 shadow-lg shadow-yellow-500/5"
                       : "bg-slate-900/60 border-slate-700 text-slate-400 hover:border-slate-600 hover:bg-slate-900"
-                  }`}
+                  } ${sideLocked ? "cursor-not-allowed opacity-70" : ""}`}
                 >
                   <GitBranch size={14} />
                   Left
                 </button>
                 <button
                   type="button"
+                  disabled={sideLocked}
                   onClick={() => setSide("right")}
                   className={`py-2.5 px-4 rounded-xl border text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
                     side === "right"
                       ? "bg-yellow-500/15 border-yellow-500 text-yellow-400 shadow-lg shadow-yellow-500/5"
                       : "bg-slate-900/60 border-slate-700 text-slate-400 hover:border-slate-600 hover:bg-slate-900"
-                  }`}
+                  } ${sideLocked ? "cursor-not-allowed opacity-70" : ""}`}
                 >
                   <GitBranch size={14} />
                   Right
                 </button>
               </div>
+              {placementParentId && (
+                <p className="text-[11px] text-cyan-300 mt-2">
+                  Placement slot selected from binary tree.
+                </p>
+              )}
             </div>
 
             {/* Username */}

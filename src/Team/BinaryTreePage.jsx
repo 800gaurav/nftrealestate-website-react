@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Tree from "react-d3-tree";
 import useAxios from "../utils/useAxios";
 import { useAuth } from "../context/AuthContext";
-import { UserRound, GitBranch, RefreshCw } from "lucide-react";
+import { UserRound, GitBranch, RefreshCw, Copy, Check } from "lucide-react";
 import Cookies from "js-cookie";
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
@@ -14,9 +14,18 @@ const getUserFromCookie = () => {
   return null;
 };
 
-const makeNode = (user, isEmpty = false) => {
+const makeNode = (user, isEmpty = false, slot = {}) => {
   if (!user || isEmpty)
-    return { name: "Empty", attributes: { isEmpty: true }, children: [] };
+    return {
+      name: "Empty",
+      attributes: {
+        isEmpty: true,
+        placementParentId: slot.parentId || null,
+        placementSide: slot.side || "left",
+        parentName: slot.parentName || "",
+      },
+      children: [],
+    };
   return {
     name: user.name || "N/A",
     attributes: {
@@ -32,6 +41,7 @@ const makeNode = (user, isEmpty = false) => {
       leftActive: user.leftActive || 0,
       rightTotal: user.rightTotal || 0,
       rightActive: user.rightActive || 0,
+      referralCode: user.referralCode,
     },
     children: [],
   };
@@ -51,8 +61,8 @@ const inject = (tree, targetId, left, right, targetUser = null) => {
         rightActive: targetUser?.rightActive ?? tree.attributes.rightActive,
       },
       children: [
-        left  ? makeNode(left)  : makeNode(null, true),
-        right ? makeNode(right) : makeNode(null, true),
+        left  ? makeNode(left)  : makeNode(null, true, { parentId: targetId, side: "left", parentName: tree.name }),
+        right ? makeNode(right) : makeNode(null, true, { parentId: targetId, side: "right", parentName: tree.name }),
       ],
     };
   }
@@ -63,10 +73,11 @@ const inject = (tree, targetId, left, right, targetUser = null) => {
 };
 
 // ─── CustomNode ───────────────────────────────────────────────────────────────
-const CustomNode = ({ nodeDatum, onNodeClick, onMouseOver, onMouseOut }) => {
+const CustomNode = ({ nodeDatum, onNodeClick, onMouseOver, onMouseOut, getPlacementLink, onCopyLink, copiedSlot }) => {
   const isEmpty  = nodeDatum.attributes?.isEmpty;
   const isRoot   = nodeDatum.__rd3t?.depth === 0;
   const isActive = nodeDatum.attributes?.isActivated;
+  const slotKey = `${nodeDatum.attributes?.placementParentId || ""}-${nodeDatum.attributes?.placementSide || ""}`;
 
   const bg     = isEmpty ? "#1e293b" : isRoot ? "#1e3a8a" : isActive ? "#14532d" : "#78350f";
   const stroke = isEmpty ? "#334155" : isRoot ? "#60a5fa" : isActive ? "#4ade80" : "#fbbf24";
@@ -81,7 +92,7 @@ const CustomNode = ({ nodeDatum, onNodeClick, onMouseOver, onMouseOut }) => {
         strokeDasharray={isEmpty ? "5 3" : "none"}
         style={{ cursor: isEmpty ? "default" : "pointer", filter: isEmpty ? "none" : "drop-shadow(0 0 6px " + stroke + "55)" }}
         onClick={() => !isEmpty && onNodeClick(nodeDatum)}
-        onMouseOver={(e) => !isEmpty && onMouseOver(nodeDatum, e)}
+        onMouseOver={(e) => onMouseOver(nodeDatum, e)}
         onMouseOut={onMouseOut}
       />
 
@@ -97,7 +108,7 @@ const CustomNode = ({ nodeDatum, onNodeClick, onMouseOver, onMouseOut }) => {
       )}
 
       {/* Label */}
-      <foreignObject x="33" y="-26" width="160" height="60" style={{ pointerEvents: "none" }}>
+      <foreignObject x="33" y="-32" width="190" height={isEmpty ? 88 : 66} style={{ pointerEvents: isEmpty ? "auto" : "none" }}>
         <div xmlns="http://www.w3.org/1999/xhtml" style={{ fontFamily: "system-ui, sans-serif", lineHeight: 1.3 }}>
           <div style={{ fontSize: 12, fontWeight: 700, color: isEmpty ? "#475569" : "#f8fafc" }}>
             {isEmpty ? "Empty Slot" : (nodeDatum.name.length > 15 ? nodeDatum.name.slice(0, 15) + "…" : nodeDatum.name)}
@@ -113,7 +124,37 @@ const CustomNode = ({ nodeDatum, onNodeClick, onMouseOver, onMouseOut }) => {
             </>
           )}
           {isEmpty && (
-            <div style={{ fontSize: 9, color: "#334155", marginTop: 2 }}>Available position</div>
+            <div>
+              <div style={{ fontSize: 9, color: "#64748b", marginTop: 2, textTransform: "capitalize" }}>
+                {nodeDatum.attributes?.placementSide} of {nodeDatum.attributes?.parentName || "member"}
+              </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCopyLink(nodeDatum);
+                }}
+                disabled={!getPlacementLink(nodeDatum)}
+                style={{
+                  marginTop: 6,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 5,
+                  border: "1px solid #0891b255",
+                  background: "#083344",
+                  color: "#a5f3fc",
+                  borderRadius: 8,
+                  padding: "5px 8px",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  cursor: getPlacementLink(nodeDatum) ? "pointer" : "not-allowed",
+                  opacity: getPlacementLink(nodeDatum) ? 1 : 0.45,
+                }}
+              >
+                {copiedSlot === slotKey ? <Check size={11} /> : <Copy size={11} />}
+                {copiedSlot === slotKey ? "Copied" : "Copy Link"}
+              </button>
+            </div>
           )}
         </div>
       </foreignObject>
@@ -162,6 +203,7 @@ const TeamBox = ({ side, total, active }) => {
 // ─── Tooltip ──────────────────────────────────────────────────────────────────
 const Tooltip = ({ user, pos }) => {
   if (!user) return null;
+  if (user.isEmpty) return null;
   const active = user.isActivated;
   return (
     <div style={{
@@ -231,6 +273,9 @@ export default function BinaryTreePage() {
   const [hovered, setHovered] = useState(null);
   const [pos,     setPos]     = useState({ x: 0, y: 0 });
   const [rootId,  setRootId]  = useState(null);
+  const [referralCode, setReferralCode] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [copiedSlot, setCopiedSlot] = useState("");
   const didLoad = useRef(false);
 
   // Resolve rootId from currentUser or cookie — runs once
@@ -240,7 +285,31 @@ export default function BinaryTreePage() {
     // Prefer MongoDB _id, fallback to userId string
     const id = u._id || u.id || u.userId;
     if (id) setRootId(id);
+    setReferralCode(u.referralCode || "");
+    setDisplayName(u.name || u.userId || "User");
   }, [currentUser]);
+
+  const getPlacementLink = (nd) => {
+    const parentId = nd.attributes?.placementParentId;
+    const slotSide = nd.attributes?.placementSide === "right" ? "right" : "left";
+    if (!referralCode || !parentId || typeof window === "undefined") return "";
+    const params = new URLSearchParams({
+      referalID: referralCode,
+      username: displayName,
+      side: slotSide,
+      placementParentId: parentId,
+    });
+    return `${window.location.origin}/signup?${params.toString()}`;
+  };
+
+  const copyPlacementLink = async (nd) => {
+    const link = getPlacementLink(nd);
+    if (!link) return;
+    await navigator.clipboard.writeText(link);
+    const slotKey = `${nd.attributes?.placementParentId || ""}-${nd.attributes?.placementSide || ""}`;
+    setCopiedSlot(slotKey);
+    setTimeout(() => setCopiedSlot(""), 1800);
+  };
 
   const loadTree = async (id, isRoot = false) => {
     if (!id) return;
@@ -261,8 +330,8 @@ export default function BinaryTreePage() {
       if (isRoot) {
         const root = makeNode(user);
         root.children = [
-          user.leftChild  ? makeNode(user.leftChild)  : makeNode(null, true),
-          user.rightChild ? makeNode(user.rightChild) : makeNode(null, true),
+          user.leftChild  ? makeNode(user.leftChild)  : makeNode(null, true, { parentId: user._id, side: "left", parentName: user.name }),
+          user.rightChild ? makeNode(user.rightChild) : makeNode(null, true, { parentId: user._id, side: "right", parentName: user.name }),
         ];
         root.attributes._loaded = true;
         setTree(root);
@@ -359,7 +428,15 @@ export default function BinaryTreePage() {
           <Tree
             data={tree}
             renderCustomNodeElement={(p) => (
-              <CustomNode {...p} onNodeClick={handleClick} onMouseOver={handleOver} onMouseOut={() => setHovered(null)} />
+              <CustomNode
+                {...p}
+                onNodeClick={handleClick}
+                onMouseOver={handleOver}
+                onMouseOut={() => setHovered(null)}
+                getPlacementLink={getPlacementLink}
+                onCopyLink={copyPlacementLink}
+                copiedSlot={copiedSlot}
+              />
             )}
             orientation="vertical"
             translate={{ x: centerX, y: 100 }}

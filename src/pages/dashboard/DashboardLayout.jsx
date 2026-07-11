@@ -12,7 +12,11 @@ import {
   User, BadgeCheck, CalendarDays, Hash,
   Layers,
 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import Cookies from "js-cookie";
+import { baseUrl } from "../../utils/axiosInstance";
+
+const DEFAULT_WHATSAPP_NUMBER = "919617766804";
 
 const MENU = [
   { label: "Dashboard",     icon: Home,          to: "/dashboard", end: true },
@@ -399,9 +403,27 @@ const TopHeader = ({ collapsed, mobileOpen, setMobileOpen }) => {
 export default function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [whatsappNumber, setWhatsappNumber] = useState(DEFAULT_WHATSAPP_NUMBER);
   const location = useLocation();
 
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch(`${baseUrl}/api/v1/admin/user/public-settings`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (mounted) setWhatsappNumber(res?.data?.whatsappNumber || DEFAULT_WHATSAPP_NUMBER);
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const whatsappLink = whatsappNumber
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi, I need support for NFT RealEstate.")}`
+    : "";
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -410,6 +432,17 @@ export default function DashboardLayout() {
       <main className={`transition-all duration-300 pt-16 min-h-screen ${collapsed ? "lg:pl-[60px]" : "lg:pl-[220px]"}`}>
         <Outlet />
       </main>
+      {whatsappLink && (
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat on WhatsApp"
+          className="fixed bottom-5 right-5 z-[9999] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-emerald-950/50 ring-4 ring-white/10 transition-transform hover:scale-105 hover:bg-[#1ebe5d]"
+        >
+          <FaWhatsapp size={31} />
+        </a>
+      )}
     </div>
   );
 }
