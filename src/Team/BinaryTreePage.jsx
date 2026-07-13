@@ -61,8 +61,8 @@ const inject = (tree, targetId, left, right, targetUser = null) => {
         rightActive: targetUser?.rightActive ?? tree.attributes.rightActive,
       },
       children: [
-        left  ? makeNode(left)  : makeNode(null, true, { parentId: targetId, side: "left", parentName: tree.name }),
-        right ? makeNode(right) : makeNode(null, true, { parentId: targetId, side: "right", parentName: tree.name }),
+        left  ? makeNode(left)  : makeNode(null, true, { parentId: tree.attributes?.userId || targetId, side: "left", parentName: tree.name }),
+        right ? makeNode(right) : makeNode(null, true, { parentId: tree.attributes?.userId || targetId, side: "right", parentName: tree.name }),
       ],
     };
   }
@@ -330,8 +330,8 @@ export default function BinaryTreePage() {
       if (isRoot) {
         const root = makeNode(user);
         root.children = [
-          user.leftChild  ? makeNode(user.leftChild)  : makeNode(null, true, { parentId: user._id, side: "left", parentName: user.name }),
-          user.rightChild ? makeNode(user.rightChild) : makeNode(null, true, { parentId: user._id, side: "right", parentName: user.name }),
+          user.leftChild  ? makeNode(user.leftChild)  : makeNode(null, true, { parentId: user.userId || user._id, side: "left", parentName: user.name }),
+          user.rightChild ? makeNode(user.rightChild) : makeNode(null, true, { parentId: user.userId || user._id, side: "right", parentName: user.name }),
         ];
         root.attributes._loaded = true;
         setTree(root);

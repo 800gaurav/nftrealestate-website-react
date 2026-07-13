@@ -9,6 +9,7 @@ import { Wallet, AlertCircle, Info, CheckCircle, AlertTriangle } from 'lucide-re
 function WithdrawPage() {
   const [Data, setData] = useState({});
   const [withdrawMethod, setWithdrawMethod] = useState('');
+  const [walletSource, setWalletSource] = useState('wallet'); // 'wallet' | 'staking'
   const [amount, setAmount] = useState('');
   const [hasPending, setHasPending] = useState(false);
   const [addressMissing, setAddressMissing] = useState(false);
@@ -78,7 +79,7 @@ function WithdrawPage() {
       const res = await fetchData({
         url: `/api/v1/user/payment/withdraw-request`,
         method: 'POST',
-        data: { userId, coin: withdrawMethod, amount: Number(amount) },
+        data: { userId, coin: withdrawMethod, amount: Number(amount), walletSource },
       });
       if (res.success) {
         toast.success('Withdrawal request created successfully!');
@@ -102,12 +103,19 @@ function WithdrawPage() {
         <div className="w-full max-w-xl space-y-6">
 
           {/* Balance Cards */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-3">
             <div className="bg-slate-900 border border-slate-700 rounded-xl p-4 text-center">
               <p className="text-slate-400 text-xs mb-1">Wallet Balance</p>
-              <p className="text-2xl font-bold text-emerald-400">${Number(Data?.walletBalance || 0).toFixed(2)}</p>
+              <p className="text-xl font-bold text-emerald-400">${Number(Data?.walletBalance || 0).toFixed(2)}</p>
             </div>
-     
+            <div className="bg-slate-900 border border-yellow-700/50 rounded-xl p-4 text-center">
+              <p className="text-slate-400 text-xs mb-1">Staking Wallet</p>
+              <p className="text-xl font-bold text-yellow-400">${Number(Data?.stakingWallet || 0).toFixed(2)}</p>
+            </div>
+            <div className="bg-slate-900 border border-slate-700 rounded-xl p-4 text-center">
+              <p className="text-slate-400 text-xs mb-1">Fund Wallet</p>
+              <p className="text-xl font-bold text-rose-400">${Number(Data?.fundBalance || 0).toFixed(2)}</p>
+            </div>
           </div>
 
           {/* Address Missing Warning */}
@@ -162,6 +170,37 @@ function WithdrawPage() {
             </div>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
+              {/* Wallet Source */}
+              <div>
+                <label className="text-slate-400 text-sm mb-1.5 block">Withdraw From</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setWalletSource('wallet')}
+                    className={`py-3 rounded-xl font-semibold text-sm border transition-all ${
+                      walletSource === 'wallet'
+                        ? 'bg-emerald-600 border-emerald-500 text-white'
+                        : 'bg-slate-800 border-slate-600 text-slate-400 hover:border-emerald-600'
+                    }`}
+                  >
+                    Wallet Balance<br/>
+                    <span className="text-xs font-normal">${Number(Data?.walletBalance || 0).toFixed(2)}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWalletSource('staking')}
+                    className={`py-3 rounded-xl font-semibold text-sm border transition-all ${
+                      walletSource === 'staking'
+                        ? 'bg-yellow-600 border-yellow-500 text-white'
+                        : 'bg-slate-800 border-slate-600 text-slate-400 hover:border-yellow-600'
+                    }`}
+                  >
+                    Staking Wallet<br/>
+                    <span className="text-xs font-normal">${Number(Data?.stakingWallet || 0).toFixed(2)}</span>
+                  </button>
+                </div>
+              </div>
+
               <div>
                 <label className="text-slate-400 text-sm mb-1.5 block">Withdrawal Method</label>
                 <select
@@ -213,7 +252,7 @@ function WithdrawPage() {
               >
                 {hasPending ? 'Pending Request Active' : 'Submit Withdrawal Request'}
               </button>
-            </form>
+            </form>  
           </div>
 
         </div>

@@ -40,6 +40,7 @@ const SignUpPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [side, setSide] = useState("left");
+  const [placementParentId, setPlacementParentId] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -54,7 +55,7 @@ const SignUpPage = () => {
   const referralID = searchParams.get('referalID');
   const name = searchParams.get('username');
   const linkSide = searchParams.get('side');
-  const placementParentId = searchParams.get('placementParentId');
+  const linkPlacementParentId = searchParams.get('placementParentId');
 
   useEffect(() => {
     if (referralID) {
@@ -65,7 +66,10 @@ const SignUpPage = () => {
       setSide(linkSide);
       setSideLocked(true);
     }
-  }, [referralID, linkSide]);
+    if (linkPlacementParentId) {
+      setPlacementParentId(linkPlacementParentId);
+    }
+  }, [referralID, linkSide, linkPlacementParentId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,7 +84,7 @@ const SignUpPage = () => {
       email,
       password,
       side,
-      placementParentId: placementParentId || null,
+      placementParentId: placementParentId.trim() || null,
     };
     try {
       setLoading(true);
@@ -94,6 +98,7 @@ const SignUpPage = () => {
       const msg = err.message;
       if (msg.includes("Email already in use")) setFieldErrors({ email: msg });
       else if (msg.includes("Invalid referral code")) setFieldErrors({ referralCode: msg });
+      else if (msg.toLowerCase().includes("placement")) setFieldErrors({ placementParentId: msg });
       else if (msg.includes("All fields are required")) setFieldErrors({ allrequired: msg });
       else setFieldErrors({ general: msg });
     } finally {
@@ -146,6 +151,24 @@ const SignUpPage = () => {
               )}
             </InputField>
 
+            {/* Placement ID */}
+            <InputField label="Placement ID (Optional)" error={fieldErrors.placementParentId}>
+              <GitBranch size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                disabled={Boolean(linkPlacementParentId)}
+                type="text"
+                value={placementParentId}
+                onChange={(e) => setPlacementParentId(e.target.value)}
+                placeholder="Optional placement user ID"
+                className={`${inputClass} disabled:opacity-50 disabled:cursor-not-allowed`}
+              />
+              {linkPlacementParentId && (
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-cyan-300 font-semibold bg-cyan-400/10 px-2 py-0.5 rounded-full">
+                  Tree Slot
+                </span>
+              )}
+            </InputField>
+
             {/* Placement Side */}
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
@@ -181,7 +204,7 @@ const SignUpPage = () => {
               </div>
               {placementParentId && (
                 <p className="text-[11px] text-cyan-300 mt-2">
-                  Placement slot selected from binary tree.
+                  New user will be placed under this Placement ID on selected side.
                 </p>
               )}
             </div>

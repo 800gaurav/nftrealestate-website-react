@@ -35,12 +35,35 @@ const Dashboard = () => {
   const fetchAlertMessage = async () => {
     try {
       const res = await fetchData({ url: `/api/v1/admin/user/get-banner` });
-      if (res?.show) {
+      const shouldShowBanner = Boolean(res?.show || res?.isActive || res?.message || res?.imageUrl);
+      const message = res?.message || res?.data?.message || "";
+      const imageUrl = res?.imageUrl || res?.data?.imageUrl || "";
+
+      if (shouldShowBanner) {
+        const escapeHtml = (value = '') =>
+          String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+
+        const popupHtml = `
+          <div style="text-align:center;">
+            ${imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="Announcement" style="width:100%; max-height:260px; object-fit:stretch; border-radius:12px; margin-bottom:12px; background:#111827; padding:6px;" />` : ''}
+            ${message ? `<div style="font-size:15px; font-weight:600; line-height:1.6; color:#fff;">${escapeHtml(message)}</div>` : ''}
+          </div>
+        `;
+
         Swal.fire({
-          title: `<span style="font-size: 16px; font-weight: bold;">${res.message}</span>`,
+          html: popupHtml,
           background: '#1a202c',
           color: 'white',
-          confirmButtonColor: '#02D396'
+          confirmButtonColor: '#02D396',
+          customClass: {
+            popup: 'rounded-2xl',
+            confirmButton: 'rounded-lg',
+          },
         });
       }
     } catch (error) {
@@ -100,7 +123,7 @@ const Dashboard = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatCard title="Current Balance"  value={fmt(data.walletBalance)}       icon={<FiDollarSign className="text-white" />} gradient="from-emerald-500 to-green-400"  sub="Available to withdraw" />
-          <StatCard title="Today Income"  value={fmt(data.todayIncome)}        icon={<FiCreditCard className="text-white" />}  gradient="from-blue-500 to-cyan-400"     sub="Package amount" />
+          <StatCard title="Today's Income"   value={fmt(data.todayIncome)}        icon={<FiActivity className="text-white" />}   gradient="from-yellow-500 to-orange-400"  sub="40% staking amount" />
           <StatCard title="Fund Wallet"     value={fmt(data.fundBalance)}          icon={<FiGift className="text-white" />}       gradient="from-rose-500 to-pink-400"     sub="Use to buy packages" />
           <StatCard title="Total Earned"    value={fmt(data.totalProfitEarned)}    icon={<FiTrendingUp className="text-white" />}  gradient="from-purple-500 to-indigo-400" sub="Lifetime income" />
         </div>
@@ -110,8 +133,9 @@ const Dashboard = () => {
           <ReportCard title="WALLET REPORT" icon={<FiCreditCard className="text-blue-400" />}>
             <div className="grid grid-cols-2 gap-4">
               <InfoItem label="Total Invest"    value={fmt(data.totalInvested)}       icon={<FiTrendingUp className="text-purple-400" />} isCurrency={false} />
-              <InfoItem label="Team Business"   value={fmt(data.totalTeamBusiness)}   icon={<FiBriefcase className="text-orange-400" />}  isCurrency={false} />
+              {/* <InfoItem label="Team Business"   value={fmt(data.totalTeamBusiness)}   icon={<FiBriefcase className="text-orange-400" />}  isCurrency={false} /> */}
               <InfoItem label="Current Balance"  value={fmt(data.walletBalance)}        icon={<FiDollarSign className="text-emerald-400" />} isCurrency={false} />
+              <InfoItem label="Staking Wallet"  value={fmt(data.stakingWallet)}        icon={<FiActivity className="text-yellow-400" />}   isCurrency={false} />
               <InfoItem label="Fund Wallet"     value={fmt(data.fundBalance)}          icon={<FiGift className="text-rose-400" />}         isCurrency={false} />
             </div>
           </ReportCard>
