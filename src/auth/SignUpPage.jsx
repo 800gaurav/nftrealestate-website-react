@@ -46,6 +46,8 @@ const SignUpPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [referralLocked, setReferralLocked] = useState(false);
   const [sideLocked, setSideLocked] = useState(false);
+  const [referralUserName, setReferralUserName] = useState("");
+  const [placementUserName, setPlacementUserName] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -70,6 +72,61 @@ const SignUpPage = () => {
       setPlacementParentId(linkPlacementParentId);
     }
   }, [referralID, linkSide, linkPlacementParentId]);
+
+  useEffect(() => {
+    const trimmedReferral = referralCode.trim();
+
+    if (referralLocked && (name || referralUserName)) {
+      setReferralUserName(name || referralUserName);
+      return;
+    }
+
+    if (!trimmedReferral) {
+      setReferralUserName("");
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetchData({
+          url: '/api/v1/user/auth/resolve-user-reference',
+          method: 'POST',
+          data: { referralCode: trimmedReferral },
+        });
+
+        setReferralUserName(res?.data?.referral?.name || "");
+      } catch {
+        setReferralUserName("");
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [referralCode, referralLocked, name, referralUserName, fetchData]);
+
+  useEffect(() => {
+    const trimmedPlacementId = placementParentId.trim();
+
+    if (!trimmedPlacementId) {
+      setPlacementUserName("");
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetchData({
+          url: '/api/v1/user/auth/resolve-user-reference',
+          method: 'POST',
+          data: { placementParentId: trimmedPlacementId },
+        });
+
+        setPlacementUserName(res?.data?.placement?.name || "");
+      } catch {
+        setPlacementUserName("");
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [placementParentId, fetchData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -144,10 +201,13 @@ const SignUpPage = () => {
                 placeholder={name ? `Referred by: ${name}` : "Enter referral code"}
                 className={`${inputClass} disabled:opacity-50 disabled:cursor-not-allowed`}
               />
-              {referralLocked && name && (
+              {(referralLocked && (name || referralUserName)) ? (
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-yellow-400 font-semibold bg-yellow-400/10 px-2 py-0.5 rounded-full">
-                  {name}
+                  {referralUserName || name}
                 </span>
+              ) : null}
+              {!referralLocked && referralUserName && (
+                <p className="text-[11px] text-emerald-400 mt-2">Referral user: {referralUserName}</p>
               )}
             </InputField>
 
@@ -166,6 +226,9 @@ const SignUpPage = () => {
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-cyan-300 font-semibold bg-cyan-400/10 px-2 py-0.5 rounded-full">
                   Tree Slot
                 </span>
+              )}
+              {placementUserName && (
+                <p className="text-[11px] text-cyan-300 mt-2">Placement user: {placementUserName}</p>
               )}
             </InputField>
 
