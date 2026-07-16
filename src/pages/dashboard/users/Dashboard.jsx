@@ -133,7 +133,7 @@ const Dashboard = () => {
           <ReportCard title="WALLET REPORT" icon={<FiCreditCard className="text-blue-400" />}>
             <div className="grid grid-cols-2 gap-4">
               <InfoItem label="Total Invest"    value={fmt(data.totalInvested)}       icon={<FiTrendingUp className="text-purple-400" />} isCurrency={false} />
-              {/* <InfoItem label="Team Business"   value={fmt(data.totalTeamBusiness)}   icon={<FiBriefcase className="text-orange-400" />}  isCurrency={false} /> */}
+              <InfoItem label="Team Business"   value={fmt(data.totalTeamBusiness)}   icon={<FiBriefcase className="text-orange-400" />}  isCurrency={false} />
               <InfoItem label="Current Balance"  value={fmt(data.walletBalance)}        icon={<FiDollarSign className="text-emerald-400" />} isCurrency={false} />
               <InfoItem label="Staking Wallet"  value={fmt(data.stakingWallet)}        icon={<FiActivity className="text-yellow-400" />}   isCurrency={false} />
               <InfoItem label="Fund Wallet"     value={fmt(data.fundBalance)}          icon={<FiGift className="text-rose-400" />}         isCurrency={false} />
