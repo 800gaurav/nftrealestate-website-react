@@ -1,29 +1,34 @@
 import { useState, useEffect } from "react";
 import useAxios from "../utils/useAxios";
 import {
-  Building2, TrendingUp, Layers, Rocket, DollarSign,
-  ShoppingBag, Plane, Landmark, BookOpen, Shield,
-  Briefcase, BarChart3, Leaf, HeartPulse, Users, Zap,
+  Building2, ShoppingBag, Briefcase, Landmark, Plane,
+  Globe, Megaphone, BookOpen, Smartphone, Shield,
+  BarChart3, Sprout, HeartPulse, Leaf, Rocket,
+  PiggyBank, Scale, FileText, Calendar, Sparkles,
   Mail, ArrowRight, CheckCircle, X
 } from "lucide-react";
 
 const SERVICES = [
-  { icon: Building2,  title: "Real Estate Services",    desc: "Global brokerage and high-value asset acquisition across premium locations worldwide.", color: "text-yellow-400",  bg: "bg-yellow-400/10 border-yellow-400/20" },
-  { icon: TrendingUp, title: "Staking Partner",         desc: "Earn daily staking income on your invested amount. 40% auto-staked from package.", color: "text-emerald-400", bg: "bg-emerald-400/10 border-emerald-400/20" },
-  { icon: Layers,     title: "Staking Benefit",         desc: "0.5% to 1% daily ROI on your staking principal. Compounds automatically.", color: "text-cyan-400",    bg: "bg-cyan-400/10 border-cyan-400/20" },
-  { icon: Rocket,     title: "NFT Real Estate",         desc: "Fractional ownership of physical properties through blockchain-powered NFTs.", color: "text-purple-400",  bg: "bg-purple-400/10 border-purple-400/20" },
-  { icon: DollarSign, title: "Digital Asset Services",  desc: "Secure custody and trading of tokenized digital assets globally.", color: "text-blue-400",    bg: "bg-blue-400/10 border-blue-400/20" },
-  { icon: ShoppingBag,title: "E-Commerce Service",      desc: "Integrated marketplace for luxury lifestyle goods and digital products.", color: "text-pink-400",    bg: "bg-pink-400/10 border-pink-400/20" },
-  { icon: Plane,      title: "Tour & Travel Service",   desc: "Premium concierge travel experiences and global tour packages for members.", color: "text-sky-400",     bg: "bg-sky-400/10 border-sky-400/20" },
-  { icon: Landmark,   title: "Banking Service",         desc: "Decentralized finance tools, wealth management and cross-border transactions.", color: "text-indigo-400",  bg: "bg-indigo-400/10 border-indigo-400/20" },
-  { icon: BookOpen,   title: "Education Service",       desc: "Blockchain and real estate investment masterclasses for all members.", color: "text-orange-400",  bg: "bg-orange-400/10 border-orange-400/20" },
-  { icon: Shield,     title: "Insurance Service",       desc: "Comprehensive risk coverage for physical and digital assets.", color: "text-red-400",     bg: "bg-red-400/10 border-red-400/20" },
-  { icon: Briefcase,  title: "Job Service",             desc: "Global career opportunities in Web3, real estate, and blockchain ecosystem.", color: "text-teal-400",    bg: "bg-teal-400/10 border-teal-400/20" },
-  { icon: Users,      title: "Matrimonial Website",     desc: "Premium matrimonial platform connecting professionals across the globe.", color: "text-rose-400",    bg: "bg-rose-400/10 border-rose-400/20" },
-  { icon: Zap,        title: "Recharge Portal",         desc: "Mobile, DTH, and utility bill recharge portal for all members.", color: "text-lime-400",    bg: "bg-lime-400/10 border-lime-400/20" },
-  { icon: BarChart3,  title: "Trading Service",         desc: "Advanced tools and signals for real-time crypto and asset exchange.", color: "text-violet-400",  bg: "bg-violet-400/10 border-violet-400/20" },
-  { icon: Leaf,       title: "Agriculture Service",     desc: "Sustainable land investment and agri-tech solutions for members.", color: "text-green-400",   bg: "bg-green-400/10 border-green-400/20" },
-  { icon: HeartPulse, title: "Health Service",          desc: "Integrated wellness and healthcare access benefits for all members.", color: "text-fuchsia-400", bg: "bg-fuchsia-400/10 border-fuchsia-400/20" },
+  { icon: Building2,     title: "Real Estate",            desc: "Best Property Solutions - brokerage and high-value asset acquisition across premium locations.", color: "text-yellow-400",  bg: "bg-yellow-400/10 border-yellow-400/20" },
+  { icon: ShoppingBag,   title: "E-Commerce",             desc: "Smart Shopping Best Deals - integrated marketplace for luxury lifestyle and digital goods.", color: "text-pink-400",    bg: "bg-pink-400/10 border-pink-400/20" },
+  { icon: Briefcase,     title: "Job Service",            desc: "Jobs for All Opportunities - global career options in Web3, real estate, and blockchain.", color: "text-teal-400",    bg: "bg-teal-400/10 border-teal-400/20" },
+  { icon: Landmark,      title: "Banking Service",        desc: "Banking Solutions Made Easy - decentralized finance tools and cross-border transactions.", color: "text-indigo-400",  bg: "bg-indigo-400/10 border-indigo-400/20" },
+  { icon: Plane,         title: "Travel Service",         desc: "Travel More Worry Less - premium travel packages and global flight/hotel bookings.", color: "text-sky-400",     bg: "bg-sky-400/10 border-sky-400/20" },
+  { icon: Globe,         title: "Tour Service",           desc: "Explore India Explore World - custom tour packages and local tour guides for members.", color: "text-emerald-400", bg: "bg-emerald-400/10 border-emerald-400/20" },
+  { icon: Megaphone,     title: "Digital Marketing",      desc: "Grow Your Brand Online - social media campaigns, SEO, and global advertising support.", color: "text-rose-400",    bg: "bg-rose-400/10 border-rose-400/20" },
+  { icon: BookOpen,      title: "Education Service",      desc: "Learn & Grow Everyday - blockchain, Web3 finance, and real estate investment masterclasses.", color: "text-orange-400",  bg: "bg-orange-400/10 border-orange-400/20" },
+  { icon: Smartphone,    title: "Recharge Service",       desc: "All Recharges at Best Price - mobile recharge, DTH payments, and utility bill portal.", color: "text-lime-400",    bg: "bg-lime-400/10 border-lime-400/20" },
+  { icon: Shield,        title: "Insurance Service",      desc: "Secure Your Life Secure Future - comprehensive risk coverage for physical and digital assets.", color: "text-red-400",     bg: "bg-red-400/10 border-red-400/20" },
+  { icon: BarChart3,     title: "Trading Service",        desc: "Trade Smart Earn Smart - advanced crypto trading signals, analytics, and market tools.", color: "text-violet-400",  bg: "bg-violet-400/10 border-violet-400/20" },
+  { icon: Sprout,        title: "Ayurvedic Service",      desc: "Natural Care Healthy Life - premium organic wellness products and natural health consulting.", color: "text-green-400",   bg: "bg-green-400/10 border-green-400/20" },
+  { icon: HeartPulse,    title: "Health Service",         desc: "Better Health Better Life - wellness programs and integrated medical support benefits.", color: "text-fuchsia-400", bg: "bg-fuchsia-400/10 border-fuchsia-400/20" },
+  { icon: Leaf,          title: "Agriculture Service",    desc: "Support Farmers Strong India - sustainable land investments and agri-tech solutions.", color: "text-amber-400",   bg: "bg-amber-400/10 border-amber-400/20" },
+  { icon: Rocket,        title: "NFT & Digital Assets",   desc: "Future of Digital Ownership - fractional property ownership via blockchain-powered NFTs.", color: "text-cyan-400",    bg: "bg-cyan-400/10 border-cyan-400/20" },
+  { icon: PiggyBank,     title: "Mutual Fund Service",    desc: "Invest Smart Grow Wealth - wealth management, mutual funds, and customized portfolios.", color: "text-blue-400",    bg: "bg-blue-400/10 border-blue-400/20" },
+  { icon: Scale,         title: "Legal Service",          desc: "Legal Support Always Here - expert corporate and personal legal counseling services.", color: "text-yellow-500",  bg: "bg-yellow-500/10 border-yellow-500/20" },
+  { icon: FileText,      title: "Document Service",       desc: "All Documents One Place - digital notary, cloud document storage, and official verification.", color: "text-sky-500",     bg: "bg-sky-500/10 border-sky-500/20" },
+  { icon: Calendar,      title: "Event Management",       desc: "Your Event Our Responsibility - luxury business event and personal party coordination.", color: "text-purple-400",  bg: "bg-purple-400/10 border-purple-400/20" },
+  { icon: Sparkles,      title: "20+ And More Services",  desc: "New Services Adding Soon - constantly expanding our portfolio to offer endless options.", color: "text-yellow-400",  bg: "bg-yellow-400/10 border-yellow-500/25 border-dashed" },
 ];
 
 const INITIAL_PACKAGES = [
@@ -78,7 +83,7 @@ export default function ServicesPage() {
             N.F.T RealEstate U.S.
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white">
-            10+ <span className="text-yellow-400">Services</span>
+            20+ <span className="text-yellow-400">Services</span>
           </h1>
           <p className="text-slate-400 max-w-2xl mx-auto text-lg">
             All services are accessible by purchasing any of the 4 packages below.
