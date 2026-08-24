@@ -14,9 +14,8 @@ import {
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import Cookies from "js-cookie";
-import { baseUrl } from "../../utils/axiosInstance";
 
-const DEFAULT_WHATSAPP_NUMBER = "919617766804";
+const WHATSAPP_NUMBER = "919617766804";
 
 const MENU = [
   { label: "Dashboard",     icon: Home,          to: "/dashboard", end: true },
@@ -403,27 +402,12 @@ const TopHeader = ({ collapsed, mobileOpen, setMobileOpen }) => {
 export default function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [whatsappNumber, setWhatsappNumber] = useState(DEFAULT_WHATSAPP_NUMBER);
   const location = useLocation();
 
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
-  useEffect(() => {
-    let mounted = true;
-    fetch(`${baseUrl}/api/v1/admin/user/public-settings`)
-      .then((res) => res.json())
-      .then((res) => {
-        if (mounted) setWhatsappNumber(res?.data?.whatsappNumber || DEFAULT_WHATSAPP_NUMBER);
-      })
-      .catch(() => {});
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  const whatsappLink = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent("Hi, I need support for NFT RealEstate.")}`;
 
-  const whatsappLink = whatsappNumber
-    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi, I need support for NFT RealEstate.")}`
-    : "";
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">

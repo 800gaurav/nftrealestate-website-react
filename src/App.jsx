@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { FaWhatsapp } from "react-icons/fa";
 import "./App.css";
@@ -10,33 +10,13 @@ import NavigatorSetter from "./routers/NavigatorSetter";
 
 import CursorWaterDrop from "./component/ClickRipple";
 import Loader from "./utils/Loader";
-import { baseUrl } from "./utils/axiosInstance";
 
-const DEFAULT_WHATSAPP_NUMBER = "919617766804";
+const WHATSAPP_NUMBER = "919617766804"; // format: country code + number, no spaces or +
 
 function App() {
   const { isLoggedIn } = useAuth();
-  const [whatsappNumber, setWhatsappNumber] = useState(DEFAULT_WHATSAPP_NUMBER);
 
-  useEffect(() => {
-    let mounted = true;
-    fetch(`${baseUrl}/api/v1/admin/user/public-settings`)
-      .then((res) => res.json())
-      .then((res) => {
-        if (mounted) {
-          setWhatsappNumber(res?.data?.whatsappNumber || DEFAULT_WHATSAPP_NUMBER);
-        }
-      })
-      .catch(() => {});
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const whatsappLink = whatsappNumber
-    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi, I need support for NFT RealEstate.")}`
-    : "";
+  const whatsappLink = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent("Hi, I need support for NFT RealEstate.")}`;
 
   return isLoggedIn ? (
     <Navigate to="/dashboard" replace />
