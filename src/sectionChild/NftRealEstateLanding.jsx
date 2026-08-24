@@ -6,7 +6,9 @@ import {
   DollarSign, CheckCircle, Calendar, MapPin, Building2, Clock,
   ArrowUpRight, Check, Copy, Key, Laptop, Network, Briefcase, Lock,
   Rocket, ChevronRight, Menu, X, Landmark, FileText, HelpCircle,
-  Phone, Mail, Heart, Leaf, Layers, ChevronDown
+  Phone, Mail, Heart, Leaf, Layers, ChevronDown,
+  ShoppingBag, Plane, Megaphone, BookOpen, Smartphone, Sprout,
+  HeartPulse, PiggyBank, Scale, Sparkles
 } from 'lucide-react';
 import useAxios from '../utils/useAxios';
 
@@ -145,21 +147,26 @@ const NftRealEstateLanding = () => {
 
   // Services for Slide 6
   const services = [
-    { icon: Building2, title: "Real Estate Services", desc: "Global brokerage and high-value asset acquisition." },
-    { icon: TrendingUp, title: "Property Investment", desc: "Strategic capital allocation in prime global markets." },
-    { icon: Layers, title: "Property Management", desc: "End-to-end maintenance and tenant lifecycle management." },
-    { icon: Rocket, title: "NFT Real Estate", desc: "Fractional ownership powered by blockchain technology." },
-    { icon: DollarSign, title: "Digital Asset Services", desc: "Secure custody and trading of tokenized assets." },
-    { icon: Landmark, title: "E-Commerce", desc: "Integrated marketplace for luxury lifestyle goods." },
-    { icon: Globe, title: "Tour & Travel", desc: "Premium concierge and global travel experiences." },
-    { icon: Landmark, title: "Banking Services", desc: "Decentralized finance and wealth management tools." },
-    { icon: Award, title: "Education Services", desc: "Blockchain and real estate investment masterclasses." },
-    { icon: Shield, title: "Insurance Services", desc: "Comprehensive risk coverage for physical/digital assets." },
-    { icon: Briefcase, title: "Job Services", desc: "Global career opportunities in the Web3 ecosystem." },
-    { icon: BarChart3, title: "Trading Services", desc: "Advanced tools for real-time asset exchange." },
-    { icon: Leaf, title: "Agriculture Services", desc: "Sustainable land investment and agri-tech solutions." },
-    { icon: Heart, title: "Health Services", desc: "Integrated wellness and healthcare access for members." },
-    { icon: Users, title: "Business Consulting", desc: "Strategic advisory for enterprise digital transformation." }
+    { icon: Building2,     title: "Real Estate",            desc: "Best Property Solutions - brokerage and high-value asset acquisition across premium locations." },
+    { icon: ShoppingBag,   title: "E-Commerce",             desc: "Smart Shopping Best Deals - integrated marketplace for luxury lifestyle and digital goods." },
+    { icon: Briefcase,     title: "Job Service",            desc: "Jobs for All Opportunities - global career options in Web3, real estate, and blockchain." },
+    { icon: Landmark,      title: "Banking Service",        desc: "Banking Solutions Made Easy - decentralized finance tools and cross-border transactions." },
+    { icon: Plane,         title: "Travel Service",         desc: "Travel More Worry Less - premium travel packages and global flight/hotel bookings." },
+    { icon: Globe,         title: "Tour Service",           desc: "Explore India Explore World - custom tour packages and local tour guides for members." },
+    { icon: Megaphone,     title: "Digital Marketing",      desc: "Grow Your Brand Online - social media campaigns, SEO, and global advertising support." },
+    { icon: BookOpen,      title: "Education Service",      desc: "Learn & Grow Everyday - blockchain, Web3 finance, and real estate investment masterclasses." },
+    { icon: Smartphone,    title: "Recharge Service",       desc: "All Recharges at Best Price - mobile recharge, DTH payments, and utility bill portal." },
+    { icon: Shield,        title: "Insurance Service",      desc: "Secure Your Life Secure Future - comprehensive risk coverage for physical and digital assets." },
+    { icon: BarChart3,     title: "Trading Service",        desc: "Trade Smart Earn Smart - advanced crypto trading signals, analytics, and market tools." },
+    { icon: Sprout,        title: "Ayurvedic Service",      desc: "Natural Care Healthy Life - premium organic wellness products and natural health consulting." },
+    { icon: HeartPulse,    title: "Health Service",         desc: "Better Health Better Life - wellness programs and integrated medical support benefits." },
+    { icon: Leaf,          title: "Agriculture Service",    desc: "Support Farmers Strong India - sustainable land investments and agri-tech solutions." },
+    { icon: Rocket,        title: "NFT & Digital Assets",   desc: "Future of Digital Ownership - fractional property ownership via blockchain-powered NFTs." },
+    { icon: PiggyBank,     title: "Mutual Fund Service",    desc: "Invest Smart Grow Wealth - wealth management, mutual funds, and customized portfolios." },
+    { icon: Scale,         title: "Legal Service",          desc: "Legal Support Always Here - expert corporate and personal legal counseling services." },
+    { icon: FileText,      title: "Document Service",       desc: "All Documents One Place - digital notary, cloud document storage, and official verification." },
+    { icon: Calendar,      title: "Event Management",       desc: "Your Event Our Responsibility - luxury business event and personal party coordination." },
+    { icon: Sparkles,      title: "20+ And More Services",  desc: "New Services Adding Soon - constantly expanding our portfolio to offer endless options." }
   ];
 
   // Ranks & Rewards for Slide 12
