@@ -135,11 +135,13 @@ const ContactFormSection = () => {
         </div>
 
         {/* Main Card Container */}
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-yellow-500/20 rounded-3xl p-5 sm:p-8 md:p-10 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div className="max-w-4xl mx-auto bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-yellow-500/20 rounded-3xl p-5 sm:p-8 md:p-10 shadow-2xl backdrop-blur-xl relative">
           
           {/* Subtle Glow Accents */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl"></div>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
             {openDropdown && (
@@ -276,7 +278,7 @@ const ContactFormSection = () => {
                 </div>
                 
                 {openDropdown === 'source' && (
-                  <ul className="absolute z-[100] left-0 right-0 mt-2 max-h-56 overflow-y-auto bg-slate-900 border border-gray-800 rounded-xl shadow-2xl py-2 scrollbar-thin scrollbar-thumb-gray-700">
+                  <ul className="absolute z-[100] left-0 right-0 bottom-full mb-2 max-h-56 overflow-y-auto bg-slate-900 border border-gray-800 rounded-xl shadow-2xl py-2 scrollbar-thin scrollbar-thumb-gray-700">
                     {SOURCE_OPTIONS.map((opt) => (
                       <li
                         key={opt}
