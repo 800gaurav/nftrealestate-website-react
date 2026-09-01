@@ -11,6 +11,7 @@ import {
   HeartPulse, PiggyBank, Scale, Sparkles
 } from 'lucide-react';
 import useAxios from '../utils/useAxios';
+import ContactFormSection from '../component/ContactFormSection';
 
 const INITIAL_PACKAGES = [
   {
@@ -259,12 +260,12 @@ const NftRealEstateLanding = () => {
             </button>
             <button
               onClick={() => {
-                const aboutEl = document.getElementById('about');
-                if (aboutEl) aboutEl.scrollIntoView({ behavior: 'smooth' });
+                const contactEl = document.getElementById('contact-form');
+                if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
               }}
               className="bg-slate-900/80 hover:bg-slate-950 border border-gray-800 hover:border-gray-700 text-white font-medium px-8 py-4 rounded-xl transition-all duration-300"
             >
-              Learn More
+              Contact Now
             </button>
           </motion.div>
         </div>
@@ -1068,6 +1069,11 @@ const NftRealEstateLanding = () => {
           </div>
         </div>
       </section>
+
+      {/* ========================================================================
+          CONTACT & WHATSAPP INQUIRY FORM
+          ======================================================================== */}
+      <ContactFormSection />
 
       {/* ========================================================================
           SLIDE 15: FOOTER SECTION
